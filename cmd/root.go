@@ -5,6 +5,8 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"net"
 	// "net/http"
@@ -168,9 +170,42 @@ func read(urlString string) {
 	go func() {
 		for d := range msgs {
 			fmt.Printf("Received a message: %s\n", d.Body)
+			valid, err := validateLine(string(d.Body))
+			if valid {
+				//TODO: Senzing here
+			} else {
+				fmt.Println("Error with message:", err)
+			}
 		}
 	}()
 
 	fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	<-forever
+}
+
+// ----------------------------------------------------------------------------
+type Entity struct {
+	DataSource string `json:"DATA_SOURCE"`
+	RecordId string `json:"RECORD_ID"`
+}
+
+// ----------------------------------------------------------------------------
+func validateLine(line string) (bool, error) {
+	var entity Entity
+	valid := json.Unmarshal([]byte(line), &entity) == nil
+	if valid {
+		return validateEntity(entity)
+	}
+	return valid, errors.New("JSON-line not well formed.")
+}
+
+// ----------------------------------------------------------------------------
+func validateEntity(entity Entity) (bool, error) {
+	if entity.DataSource == "" {
+		return false, errors.New("A DATA_SOURCE field is required.")
+	}
+	if entity.RecordId == "" {
+		return false, errors.New("A RECORD_ID field is required.")
+	}
+	return true, nil
 }
