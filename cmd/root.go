@@ -146,8 +146,8 @@ func read(urlString string) {
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
-	  "hello", // name
-	  false,   // durable
+	  "senzing_input", // name
+	  true,   // durable
 	  false,   // delete when unused
 	  false,   // exclusive
 	  false,   // no-wait
@@ -157,13 +157,20 @@ func read(urlString string) {
 	msgs, err := ch.Consume(
 		q.Name, // queue
 		"",     // consumer
-		true,   // auto-ack
+		false,   // auto-ack
 		false,  // exclusive
 		false,  // no-local
 		false,  // no-wait
 		nil,    // args
 	)
-	failOnError(err, "Failed to register a consumer")
+	failOnError(err, "Failed to register a loader")
+
+	err = ch.Qos(
+		1,     // prefetch count
+		0,     // prefetch size
+		false, // global
+	  )
+	failOnError(err, "Failed to set QoS")
 
 	forever := make(chan bool)
 
@@ -178,6 +185,7 @@ func read(urlString string) {
 				//  ala rabbitmq message ID?
 				fmt.Println("Error with message:", err)
 			}
+			d.Ack(false)
 		}
 	}()
 
