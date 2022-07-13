@@ -21,8 +21,10 @@ import (
 var (
 	cfgFile string
 
-	// read from this URL, could be a file or a queue
-	inputURL  string
+	exchange string
+	inputQueue string
+
+	inputURL  string // read from this URL, could be a file or a queue
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -39,11 +41,12 @@ to quickly create a Cobra application.`,
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("start Run")
+		fmt.Println("viper key list:")
 		for _, key := range viper.AllKeys() {
-			fmt.Println(key, " = ", viper.Get(key))
+			fmt.Println("  - ", key, " = ", viper.Get(key))
 		}
 		parseURL(viper.GetString("inputURL"))
-		read(viper.GetString("inputURL"))
+		read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
 	},
 }
 
@@ -70,6 +73,10 @@ func init() {
 	// RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	RootCmd.Flags().StringVarP(&inputURL, "inputURL", "i", "", "input location")
 	viper.BindPFlag("inputURL", RootCmd.Flags().Lookup("inputURL"))
+	RootCmd.Flags().StringVarP(&exchange, "exchange", "", "", "Message queue exchange name")
+	viper.BindPFlag("exchange", RootCmd.Flags().Lookup("exchange"))
+	RootCmd.Flags().StringVarP(&inputQueue, "inputQueue", "", "", "Senzing input queue name")
+	viper.BindPFlag("inputQueue", RootCmd.Flags().Lookup("inputQueue"))
 
 }
 
@@ -95,6 +102,10 @@ func initConfig() {
 	// all env vars should be prefixed with "SENZING_TOOLS_"
 	viper.SetEnvPrefix("senzing_tools")
 	viper.BindEnv("inputURL")
+	viper.BindEnv("exchange")
+	viper.SetDefault("exchange", "senzing")
+	viper.BindEnv("inputQueue")
+	viper.SetDefault("inputQueue", "senzing-input")
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
@@ -136,7 +147,7 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func read(urlString string) {
+func read(urlString string, exchange string, queue string) {
 	conn, err := amqp.Dial(urlString)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
@@ -145,8 +156,19 @@ func read(urlString string) {
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
+	err = ch.ExchangeDeclare(
+		exchange,   // name
+		"direct", // type
+		true,     // durable
+		false,    // auto-deleted
+		false,    // internal
+		false,    // no-wait
+		nil,      // arguments
+	)
+	failOnError(err, "Failed to declare an exchange")
+
 	q, err := ch.QueueDeclare(
-	  "senzing_input", // name
+	  queue, // name
 	  true,   // durable
 	  false,   // delete when unused
 	  false,   // exclusive
@@ -154,6 +176,15 @@ func read(urlString string) {
 	  nil,     // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
+
+	err = ch.QueueBind(
+		q.Name, // queue name
+		q.Name,     // routing key
+		exchange, // exchange
+		false,
+		nil,
+	)
+
 	msgs, err := ch.Consume(
 		q.Name, // queue
 		"",     // consumer
