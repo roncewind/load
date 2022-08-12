@@ -197,10 +197,10 @@ func read(urlString string, exchange string, queue string) {
 	failOnError(err, "Failed to register a loader")
 
 	err = ch.Qos(
-		1,     // prefetch count
+		3,     // prefetch count (should set to the number of load goroutines)
 		0,     // prefetch size
 		false, // global
-	  )
+	)
 	failOnError(err, "Failed to set QoS")
 
 	forever := make(chan bool)
@@ -211,12 +211,17 @@ func read(urlString string, exchange string, queue string) {
 			valid, err := validateLine(string(d.Body))
 			if valid {
 				//TODO: Senzing here
+				// when we successfully process a delivery, Ack it.
+				d.Ack(false)
+				// when there's an issue with a delivery should we requeue it?
+				// d.Nack(false, true)
 			} else {
+				// when we get an invalid delivery, Ack it, so we don't requeue
+				d.Ack(false)
 				// FIXME: errors should be specific to the input method
 				//  ala rabbitmq message ID?
 				fmt.Println("Error with message:", err)
 			}
-			d.Ack(false)
 		}
 	}()
 
