@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 roncewind <dad@lynntribe.net>
 
 */
 package cmd
@@ -45,8 +45,13 @@ to quickly create a Cobra application.`,
 		for _, key := range viper.AllKeys() {
 			fmt.Println("  - ", key, " = ", viper.Get(key))
 		}
-		parseURL(viper.GetString("inputURL"))
-		read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
+		if(viper.IsSet("inputURL")) {
+			parseURL(viper.GetString("inputURL"))
+			read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
+		} else {
+			cmd.Help()
+		}
+
 	},
 }
 
