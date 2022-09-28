@@ -45,7 +45,10 @@ to quickly create a Cobra application.`,
 		for _, key := range viper.AllKeys() {
 			fmt.Println("  - ", key, " = ", viper.Get(key))
 		}
-		if(viper.IsSet("inputURL")) {
+
+		//TODO: test for required parameters otherwise show help.
+		if( viper.IsSet("inputURL")
+		&& viper.IsSet("exchange") && viper.IsSet("inputQueue")) {
 			parseURL(viper.GetString("inputURL"))
 			read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
 		} else {
