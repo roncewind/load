@@ -14,6 +14,7 @@ import (
 	"os"
 
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/roncewind/load/input"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -51,8 +52,9 @@ to quickly create a Cobra application.`,
 		    viper.IsSet("exchange") &&
 			viper.IsSet("inputQueue")) {
 
-			parseURL(viper.GetString("inputURL"))
-			read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
+			input.ParseURL(viper.GetString("inputURL"))
+			//parseURL(viper.GetString("inputURL"))
+			//read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
 		} else {
 			cmd.Help()
 		}
