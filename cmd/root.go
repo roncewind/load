@@ -15,6 +15,7 @@ import (
 
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/roncewind/load/input"
+	"github.com/roncewind/szrecord"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -53,7 +54,7 @@ to quickly create a Cobra application.`,
 			viper.IsSet("inputQueue")) {
 
 			input.ParseURL(viper.GetString("inputURL"))
-			//read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
+			read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
 		} else {
 			cmd.Help()
 		}
@@ -192,7 +193,7 @@ func read(urlString string, exchange string, queue string) {
 	go func() {
 		for d := range msgs {
 			fmt.Printf("Received a message: %s\n", d.Body)
-			valid, err := input.ValidateLine(string(d.Body))
+			valid, err := szrecord.Validate(string(d.Body))
 			if valid {
 				//TODO: Senzing here
 				// when we successfully process a delivery, Ack it.
@@ -212,32 +213,3 @@ func read(urlString string, exchange string, queue string) {
 	fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	<-forever
 }
-
-// // ----------------------------------------------------------------------------
-// type Record struct {
-// 	DataSource string `json:"DATA_SOURCE"`
-// 	RecordId string `json:"RECORD_ID"`
-// }
-
-// // ----------------------------------------------------------------------------
-// func validateLine(line string) (bool, error) {
-// 	var record Record
-// 	valid := json.Unmarshal([]byte(line), &record) == nil
-// 	if valid {
-// 		return validateRecord(record)
-// 	}
-// 	return valid, errors.New("JSON-line not well formed.")
-// }
-
-// // ----------------------------------------------------------------------------
-// func validateRecord(record Record) (bool, error) {
-// 	// FIXME: errors should be specific to the input method
-// 	//  ala rabbitmq message ID?
-// 	if record.DataSource == "" {
-// 		return false, errors.New("A DATA_SOURCE field is required.")
-// 	}
-// 	if record.RecordId == "" {
-// 		return false, errors.New("A RECORD_ID field is required.")
-// 	}
-// 	return true, nil
-// }
