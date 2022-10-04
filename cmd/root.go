@@ -5,12 +5,12 @@ Copyright © 2022 roncewind <dad@lynntribe.net>
 package cmd
 
 import (
-	"encoding/json"
-	"errors"
+	// "encoding/json"
+	// "errors"
 	"fmt"
-	"net"
+	// "net"
 	// "net/http"
-	"net/url"
+	// "net/url"
 	"os"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -53,7 +53,6 @@ to quickly create a Cobra application.`,
 			viper.IsSet("inputQueue")) {
 
 			input.ParseURL(viper.GetString("inputURL"))
-			//parseURL(viper.GetString("inputURL"))
 			//read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
 		} else {
 			cmd.Help()
@@ -125,33 +124,6 @@ func initConfig() {
 	}
 }
 
-func parseURL(urlString string) {
-	u, err := url.Parse(urlString)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("\tScheme: ", u.Scheme)
-	fmt.Println("\tUser full: ", u.User)
-	fmt.Println("\tUser name: ", u.User.Username())
-	p, _ := u.User.Password()
-	fmt.Println("\tPassword: ", p)
-
-	fmt.Println("\tHost full: ", u.Host)
-	host, port, _ := net.SplitHostPort(u.Host)
-	fmt.Println("\tHost: ", host)
-	fmt.Println("\tPort: ", port)
-
-	fmt.Println("\tPath: ", u.Path)
-	fmt.Println("\tFragment: ", u.Fragment)
-
-	fmt.Println("\tQuery string: ", u.RawQuery)
-	m, _ := url.ParseQuery(u.RawQuery)
-	fmt.Println("\tParsed query string: ", m)
-	// fmt.Println(m["k"][0])
-}
-
-
 func failOnError(err error, msg string) {
 	if err != nil {
 		s := fmt.Sprintf("%s: %s", msg, err)
@@ -220,7 +192,7 @@ func read(urlString string, exchange string, queue string) {
 	go func() {
 		for d := range msgs {
 			fmt.Printf("Received a message: %s\n", d.Body)
-			valid, err := validateLine(string(d.Body))
+			valid, err := input.ValidateLine(string(d.Body))
 			if valid {
 				//TODO: Senzing here
 				// when we successfully process a delivery, Ack it.
@@ -241,31 +213,31 @@ func read(urlString string, exchange string, queue string) {
 	<-forever
 }
 
-// ----------------------------------------------------------------------------
-type Record struct {
-	DataSource string `json:"DATA_SOURCE"`
-	RecordId string `json:"RECORD_ID"`
-}
+// // ----------------------------------------------------------------------------
+// type Record struct {
+// 	DataSource string `json:"DATA_SOURCE"`
+// 	RecordId string `json:"RECORD_ID"`
+// }
 
-// ----------------------------------------------------------------------------
-func validateLine(line string) (bool, error) {
-	var record Record
-	valid := json.Unmarshal([]byte(line), &record) == nil
-	if valid {
-		return validateRecord(record)
-	}
-	return valid, errors.New("JSON-line not well formed.")
-}
+// // ----------------------------------------------------------------------------
+// func validateLine(line string) (bool, error) {
+// 	var record Record
+// 	valid := json.Unmarshal([]byte(line), &record) == nil
+// 	if valid {
+// 		return validateRecord(record)
+// 	}
+// 	return valid, errors.New("JSON-line not well formed.")
+// }
 
-// ----------------------------------------------------------------------------
-func validateRecord(record Record) (bool, error) {
-	// FIXME: errors should be specific to the input method
-	//  ala rabbitmq message ID?
-	if record.DataSource == "" {
-		return false, errors.New("A DATA_SOURCE field is required.")
-	}
-	if record.RecordId == "" {
-		return false, errors.New("A RECORD_ID field is required.")
-	}
-	return true, nil
-}
+// // ----------------------------------------------------------------------------
+// func validateRecord(record Record) (bool, error) {
+// 	// FIXME: errors should be specific to the input method
+// 	//  ala rabbitmq message ID?
+// 	if record.DataSource == "" {
+// 		return false, errors.New("A DATA_SOURCE field is required.")
+// 	}
+// 	if record.RecordId == "" {
+// 		return false, errors.New("A RECORD_ID field is required.")
+// 	}
+// 	return true, nil
+// }
