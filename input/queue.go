@@ -66,6 +66,7 @@ func Read() (bool) {
 }
 
 // ----------------------------------------------------------------------------
+// TODO: move to a new module in order to reuse
 func ReadRabbit(urlString string, exchange string, queue string) {
 	conn, err := amqp.Dial(urlString)
 	failOnError(err, "Failed to connect to RabbitMQ")
