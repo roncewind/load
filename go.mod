@@ -3,8 +3,10 @@ module github.com/roncewind/load
 go 1.18
 
 require (
+	github.com/docktermj/g2-sdk-go v0.0.0-20221007221454-b587be5e80b7
+	github.com/docktermj/go-xyzzy-helpers v0.0.0-20221007181716-66fb46bff36f
 	github.com/rabbitmq/amqp091-go v1.3.4
-	github.com/roncewind/szrecord v0.0.4
+	github.com/roncewind/szrecord v0.0.6
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
 )
@@ -26,5 +28,5 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
