@@ -260,7 +260,7 @@ run:
 	GOOS=linux \
 	GOARCH=amd64 \
 	go run . \
-		--inputURL "amqp://guest:guest@192.168.6.92:5672"
+		--inputURL "amqp://guest:guest@192.168.6.94:5672"
 
 
 # -----------------------------------------------------------------------------
