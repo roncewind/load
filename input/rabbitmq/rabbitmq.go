@@ -97,17 +97,17 @@ func Read(urlString string, exchange string, queue string) {
 		for d := range msgs {
 			fmt.Printf("Received a message: %s\n", d.Body)
 			valid := false
-			record, validationErr := szrecord.NewRecord(string(d.Body))
-			if validationErr == nil {
-				isValid, err := szrecord.ValidateRecord(*record)
+			record, newRecordErr := szrecord.NewRecord(string(d.Body))
+			if newRecordErr == nil {
+				isValid, validationErr := szrecord.ValidateRecord(*record)
 				valid = isValid
-				if err != nil {
-					logger.LogMessageFromError(MessageIdFormat, 5, "", err)
-					fmt.Println("Validation error message:", err)
+				if validationErr != nil {
+					logger.LogMessageFromError(MessageIdFormat, 5, "", validationErr)
+					fmt.Println("Validation error message:", validationErr)
 				}
 			} else {
-				logger.LogMessageFromError(MessageIdFormat, 5, "", validationErr)
-				fmt.Println("Validation error message:", validationErr)
+				logger.LogMessageFromError(MessageIdFormat, 5, "", newRecordErr)
+				fmt.Println("Validation error message:", newRecordErr)
 			}
 			if valid {
 				loadID := "Load"
