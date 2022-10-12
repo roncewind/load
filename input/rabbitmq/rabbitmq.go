@@ -101,6 +101,7 @@ func Read(urlString string, exchange string, queue string) {
 			if err == nil {
 				isValid, err := szrecord.ValidateRecord(*record)
 				valid = isValid
+			} else {
 				logger.LogMessageFromError(MessageIdFormat, 5, "", err)
 				fmt.Println("Validation error message:", err)
 			}
