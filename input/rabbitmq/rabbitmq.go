@@ -96,24 +96,16 @@ func Read(urlString string, exchange string, queue string) {
 	go func() {
 		for d := range msgs {
 			fmt.Printf("Received a message: %s\n", d.Body)
-			valid := false
 			record, newRecordErr := szrecord.NewRecord(string(d.Body))
 			if newRecordErr == nil {
-				isValid, validationErr := szrecord.ValidateRecord(*record)
-				valid = isValid
-				if validationErr != nil {
-					logger.LogMessageFromError(MessageIdFormat, 2001, "szRecord invalid", validationErr)
-				}
-			} else {
-				logger.LogMessageFromError(MessageIdFormat, 2001, "create new szRecord", newRecordErr)
-			}
-			if valid {
+
 				loadID := "Load"
 				var flags int64 = 0
 
 				withInfo, withInfoErr := g2engine.AddRecordWithInfo(ctx, record.DataSource, record.Id, record.Json, loadID, flags)
 				if withInfoErr != nil {
 					logger.LogMessage(MessageIdFormat, 2002, withInfoErr.Error())
+					//TODO:  what do we do with the record here?
 				}
 
 				fmt.Printf("WithInfo: %s\n", withInfo)
@@ -122,12 +114,12 @@ func Read(urlString string, exchange string, queue string) {
 				// when there's an issue with a delivery should we requeue it?
 				// d.Nack(false, true)
 			} else {
+				logger.LogMessageFromError(MessageIdFormat, 2001, "create new szRecord", newRecordErr)
 				// when we get an invalid delivery, Ack it, so we don't requeue
 				// TODO: set up rabbit with a dead letter queue?
 				d.Ack(false)
 				// FIXME: errors should be specific to the input method
 				//  ala rabbitmq message ID?
-				fmt.Println("Error with message:", err)
 			}
 		}
 	}()
