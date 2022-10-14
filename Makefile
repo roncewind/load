@@ -1,4 +1,4 @@
-# Makefile that builds a golang base Senzing load program
+# Makefile that builds go-hello-world, a "go" program.
 
 # "Simple expanded" variables (':=')
 
@@ -8,7 +8,7 @@ MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MAKEFILE_DIRECTORY := $(dir $(MAKEFILE_PATH))
 TARGET_DIRECTORY := $(MAKEFILE_DIRECTORY)/target
 DOCKER_CONTAINER_NAME := $(PROGRAM_NAME)
-DOCKER_IMAGE_NAME := roncewind/$(PROGRAM_NAME)
+DOCKER_IMAGE_NAME := dockter/$(PROGRAM_NAME)
 DOCKER_BUILD_IMAGE_NAME := $(DOCKER_IMAGE_NAME)-build
 BUILD_VERSION := $(shell git describe --always --tags --abbrev=0 --dirty)
 BUILD_TAG := $(shell git describe --always --tags --abbrev=0)
@@ -19,7 +19,6 @@ GO_PACKAGE_NAME := $(shell echo $(GIT_REMOTE_URL) | sed -e 's|^git@github.com:|g
 # Recursive assignment ('=')
 
 CC = gcc
-
 # Conditional assignment. ('?=')
 
 SENZING_G2_DIR ?= /opt/senzing/g2
@@ -38,69 +37,13 @@ default: help
 
 # Flags for the C compiler
 
-CGO_CFLAGS = \
-	-I${SENZING_G2_DIR}/sdk/c
-
 # Flags for
+
+LD_LIBRARY_PATH = ${SENZING_G2_DIR}/lib
 
 CGO_LDFLAGS = \
 	-L${SENZING_G2_DIR}/lib \
-	-lanalytics \
-	-ldb2plugin \
-	-lG2 \
-	-lg2AddressComp \
-	-lg2AddressHasher \
-	-lg2CloseNames \
-	-lg2CompJavaScoreSet \
-	-lg2ConfigParseAddr \
-	-lg2DateComp \
-	-lg2DistinctFeatJava \
-	-lg2DLComp \
-	-lg2EFeatJava \
-	-lg2EmailComp \
-	-lg2ExactDomainMatchComp \
-	-lg2ExactMatchComp \
-	-lg2FeatBuilder \
-	-lg2FormatSSN \
-	-lg2GenericHasher \
-	-lg2GEOLOCComp \
-	-lg2GNRNameComp \
-	-lg2GroupAssociationComp \
-	-lG2Hasher \
-	-lg2IDHasher \
-	-lg2JVMPlugin \
-	-lg2NameHasher \
-	-lg2ParseDOB \
-	-lg2ParseEmail \
-	-lg2ParseGEOLOC \
-	-lg2ParseID \
-	-lg2ParseName \
-	-lg2ParsePhone \
-	-lg2PartialAddresses \
-	-lg2PartialDates \
-	-lg2PartialNames \
-	-lg2PhoneComp \
-	-lg2PhoneHasher \
-	-lG2SSAdm \
-	-lg2SSNComp \
-	-lg2STBHasher \
-	-lg2StdCountry \
-	-lg2StdJava \
-	-lg2StdTokenizeName \
-	-lg2StrictSubsetFelems \
-	-lg2StrictSubsetNormalizedFelems \
-	-lg2StrictSubsetTokens \
-	-lg2StringComp \
-	-lmariadbplugin \
-	-lmssqlplugin \
-	-lNameDataObject \
-	-loracleplugin \
-	-lpostgresqlplugin \
-	-lscoring \
-	-lSpaceTimeBoxStandardizer \
-	-lsqliteplugin
-
-LD_LIBRARY_PATH = ${SENZING_G2_DIR}/lib
+	-lG2
 
 # ---- Linux ------------------------------------------------------------------
 
@@ -193,7 +136,6 @@ dependencies:
 	@go get -u ./...
 	@go get -t -u ./...
 	@go mod tidy
-	@go get -u github.com/jstemmer/go-junit-report
 
 
 .PHONY: build
@@ -245,10 +187,11 @@ build-windows:
 
 .PHONY: test
 test:
-	@go test -v $(GO_PACKAGE_NAME)/...
+#	@go test -v $(GO_PACKAGE_NAME)/...
 #	@go test -v $(GO_PACKAGE_NAME)/g2diagnostic
 #	@go test -v $(GO_PACKAGE_NAME)/g2engine
 #	@go test -v $(GO_PACKAGE_NAME)/g2config
+	@go test -v $(GO_PACKAGE_NAME)/g2configmgr
 
 # -----------------------------------------------------------------------------
 # Run
@@ -260,8 +203,7 @@ run:
 	GOOS=linux \
 	GOARCH=amd64 \
 	go run . \
-		--inputURL "amqp://guest:guest@192.168.6.94:5672"
-
+		--inputURL "amqp://guest:guest@192.168.6.96:5672"
 
 # -----------------------------------------------------------------------------
 # docker-build

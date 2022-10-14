@@ -20,7 +20,7 @@ import (
 	// "github.com/spf13/viper"
 )
 
-const MessageIdFormat = "senzing-LOAD%04d"
+const MessageIdFormat = "senzing-6201%04d"
 
 // ----------------------------------------------------------------------------
 // TODO: rename
@@ -32,7 +32,7 @@ func Read(urlString string, exchange string, queue string) {
 
 	g2engine, g2engineErr := getG2engine(ctx)
 	if g2engineErr != nil {
-		logger.LogMessage(MessageIdFormat, 5, g2engineErr.Error())
+		logger.LogMessage(MessageIdFormat, 2000, g2engineErr.Error())
 		failOnError(g2engineErr, "Unable to reach G2")
 	}
 
@@ -102,12 +102,10 @@ func Read(urlString string, exchange string, queue string) {
 				isValid, validationErr := szrecord.ValidateRecord(*record)
 				valid = isValid
 				if validationErr != nil {
-					logger.LogMessageFromError(MessageIdFormat, 5, "", validationErr)
-					fmt.Println("Validation error message:", validationErr)
+					logger.LogMessageFromError(MessageIdFormat, 2001, "szRecord invalid", validationErr)
 				}
 			} else {
-				logger.LogMessageFromError(MessageIdFormat, 5, "", newRecordErr)
-				fmt.Println("Validation error message:", newRecordErr)
+				logger.LogMessageFromError(MessageIdFormat, 2001, "create new szRecord", newRecordErr)
 			}
 			if valid {
 				loadID := "Load"
@@ -115,8 +113,7 @@ func Read(urlString string, exchange string, queue string) {
 
 				withInfo, withInfoErr := g2engine.AddRecordWithInfo(ctx, record.DataSource, record.Id, record.Json, loadID, flags)
 				if withInfoErr != nil {
-					logger.LogMessage(MessageIdFormat, 5, withInfoErr.Error())
-					fmt.Println("Withinfo error message:", withInfoErr)
+					logger.LogMessage(MessageIdFormat, 2002, withInfoErr.Error())
 				}
 
 				fmt.Printf("WithInfo: %s\n", withInfo)
@@ -126,6 +123,7 @@ func Read(urlString string, exchange string, queue string) {
 				// d.Nack(false, true)
 			} else {
 				// when we get an invalid delivery, Ack it, so we don't requeue
+				// TODO: set up rabbit with a dead letter queue?
 				d.Ack(false)
 				// FIXME: errors should be specific to the input method
 				//  ala rabbitmq message ID?
