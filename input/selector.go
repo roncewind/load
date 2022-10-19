@@ -1,28 +1,21 @@
 package input
 
 import (
-	// "encoding/json"
 	// "errors"
 	"fmt"
 	"net"
-	// "net/http"
 	"net/url"
-	// "os"
 
-	// amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/roncewind/load/input/rabbitmq"
-	// "github.com/roncewind/szrecord"
-	// "github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 // ----------------------------------------------------------------------------
-func parseURL(urlString string) (*url.URL){
+func parseURL(urlString string) *url.URL {
 	u, err := url.Parse(urlString)
 	if err != nil {
 		panic(err)
 	}
-
 
 	fmt.Println("===============================")
 	fmt.Println("\tScheme: ", u.Scheme)
@@ -42,20 +35,18 @@ func parseURL(urlString string) (*url.URL){
 	fmt.Println("\tQuery string: ", u.RawQuery)
 	m, _ := url.ParseQuery(u.RawQuery)
 	fmt.Println("\tParsed query string: ", m)
-	// fmt.Println(m["k"][0])
-	fmt.Println("===============================")
 
 	return u
 }
 
 // ----------------------------------------------------------------------------
-func Read() (bool) {
+func Read() bool {
 	u := parseURL(viper.GetString("inputURL"))
 	switch u.Scheme {
 	case "amqp":
-		if( viper.IsSet("inputURL") &&
+		if viper.IsSet("inputURL") &&
 			viper.IsSet("exchange") &&
-			viper.IsSet("inputQueue")) {
+			viper.IsSet("inputQueue") {
 			rabbitmq.Read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
 		} else {
 			return false
@@ -65,4 +56,3 @@ func Read() (bool) {
 	}
 	return true
 }
-
