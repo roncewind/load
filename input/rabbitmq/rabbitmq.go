@@ -20,6 +20,7 @@ import (
 	// "github.com/spf13/viper"
 )
 
+// load is 6201:  https://github.com/Senzing/knowledge-base/blob/main/lists/senzing-product-ids.md
 const MessageIdFormat = "senzing-6201%04d"
 
 // ----------------------------------------------------------------------------

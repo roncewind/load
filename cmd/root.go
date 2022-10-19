@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 roncewind <dad@lynntribe.net>
-
 */
 package cmd
 
@@ -8,25 +7,32 @@ import (
 	// "encoding/json"
 	// "errors"
 	"fmt"
+	"strings"
+
 	// "net"
 	// "net/http"
 	// "net/url"
 	"os"
 
+	"github.com/docktermj/go-xyzzy-helpers/logger"
 	"github.com/roncewind/load/input"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
-	cfgFile string
-
-	exchange string
-	inputQueue string
-
-	inputURL  string // read from this URL, could be a file or a queue
+	cfgFile    string
+	exchange   string = "senzing"
+	fileType   string //TODO: load from file
+	inputQueue string = "senzing_input"
+	inputURL   string // read from this URL, could be a file or a queue
+	logLevel   string = "error"
 )
 
+// load is 6201:  https://github.com/Senzing/knowledge-base/blob/main/lists/senzing-product-ids.md
+const MessageIdFormat = "senzing-6201%04d"
+
+// ----------------------------------------------------------------------------
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "load",
@@ -37,8 +43,7 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
+
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("start Run")
 		fmt.Println("viper key list:")
@@ -46,20 +51,14 @@ to quickly create a Cobra application.`,
 			fmt.Println("  - ", key, " = ", viper.Get(key))
 		}
 
-		//TODO: test for required parameters otherwise show help.
-		// if( viper.IsSet("inputURL") &&
-		//     viper.IsSet("exchange") &&
-		// 	viper.IsSet("inputQueue")) {
-
-		// 	input.ParseURL(viper.GetString("inputURL"))
-		// 	input.Read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
-		if( !input.Read() ) {
+		if !input.Read() {
 			cmd.Help()
 		}
 
 	},
 }
 
+// ----------------------------------------------------------------------------
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the RootCmd.
 func Execute() {
@@ -69,28 +68,31 @@ func Execute() {
 	}
 }
 
+// ----------------------------------------------------------------------------
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
 
 	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	// RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	RootCmd.Flags().StringVarP(&inputURL, "inputURL", "i", "", "input location")
-	viper.BindPFlag("inputURL", RootCmd.Flags().Lookup("inputURL"))
-	RootCmd.Flags().StringVarP(&exchange, "exchange", "", "", "Message queue exchange name")
+	// when this action is called directly.	RootCmd.Flags().StringVarP(&exchange, "exchange", "", "", "Message queue exchange name")
 	viper.BindPFlag("exchange", RootCmd.Flags().Lookup("exchange"))
+	RootCmd.Flags().StringVarP(&fileType, "fileType", "", "", "file type override")
+	viper.BindPFlag("fileType", RootCmd.Flags().Lookup("fileType"))
 	RootCmd.Flags().StringVarP(&inputQueue, "inputQueue", "", "", "Senzing input queue name")
 	viper.BindPFlag("inputQueue", RootCmd.Flags().Lookup("inputQueue"))
-
+	RootCmd.Flags().StringVarP(&inputURL, "inputURL", "i", "", "input location")
+	viper.BindPFlag("inputURL", RootCmd.Flags().Lookup("inputURL"))
+	RootCmd.Flags().StringVarP(&logLevel, "logLevel", "", "", "set the logging level, default Error")
+	viper.BindPFlag("logLevel", RootCmd.Flags().Lookup("logLevel"))
 }
 
+// ----------------------------------------------------------------------------
 // initConfig reads in config file and ENV variables if set.
+// Config precedence:
+// - cmdline args
+// - env vars
+// - config file
 func initConfig() {
 	if cfgFile != "" {
 		// Use config file from the flag.
@@ -101,24 +103,66 @@ func initConfig() {
 		cobra.CheckErr(err)
 
 		// Search config in <home directory>/.senzing with name "config" (without extension).
-		viper.AddConfigPath(home+"/.senzing-tools")
+		viper.AddConfigPath(home + "/.senzing-tools")
 		viper.AddConfigPath(home)
 		viper.AddConfigPath("/etc/senzing-tools")
 		viper.SetConfigType("yaml")
 		viper.SetConfigName("config")
 	}
 
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Config file not found; ignore error
+		} else {
+			// Config file was found but another error was produced
+			logger.LogMessageFromError(MessageIdFormat, 2001, "Config file found, but not loaded", err)
+		}
+	}
 	viper.AutomaticEnv() // read in environment variables that match
 	// all env vars should be prefixed with "SENZING_TOOLS_"
 	viper.SetEnvPrefix("senzing_tools")
-	viper.BindEnv("inputURL")
 	viper.BindEnv("exchange")
-	viper.SetDefault("exchange", "senzing")
+	viper.BindEnv("fileType")
 	viper.BindEnv("inputQueue")
-	viper.SetDefault("inputQueue", "senzing-input")
+	viper.BindEnv("inputURL")
+	viper.BindEnv("logLevel")
 
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	viper.SetDefault("exchange", "senzing")
+	viper.SetDefault("inputQueue", "senzing-input")
+	viper.SetDefault("logLevel", "error")
+
+	// setup local variables, in case they came from a config file
+	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
+	//  automatically, this is only IF the var is in the config file
+	exchange = viper.GetString("exchange")
+	fileType = viper.GetString("fileType")
+	inputQueue = viper.GetString("inputQueue")
+	inputURL = viper.GetString("inputURL")
+	logLevel = viper.GetString("logLevel")
+
+	setLogLevel()
+}
+
+// ----------------------------------------------------------------------------
+func setLogLevel() {
+	var level logger.Level = logger.LevelError
+	if viper.IsSet("logLevel") {
+		switch strings.ToUpper(logLevel) {
+		case logger.LevelDebugName:
+			level = logger.LevelDebug
+		case logger.LevelErrorName:
+			level = logger.LevelError
+		case logger.LevelFatalName:
+			level = logger.LevelFatal
+		case logger.LevelInfoName:
+			level = logger.LevelInfo
+		case logger.LevelPanicName:
+			level = logger.LevelPanic
+		case logger.LevelTraceName:
+			level = logger.LevelTrace
+		case logger.LevelWarnName:
+			level = logger.LevelWarn
+		}
+		logger.SetLevel(level)
 	}
 }
