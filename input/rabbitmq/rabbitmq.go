@@ -16,6 +16,7 @@ import (
 	"github.com/docktermj/go-xyzzy-helpers/logger"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/roncewind/szrecord"
+	"github.com/spf13/viper"
 	// "github.com/spf13/cobra"
 	// "github.com/spf13/viper"
 )
@@ -46,7 +47,7 @@ func Read(urlString string, exchange string, queue string) {
 	defer ch.Close()
 
 	err = ch.ExchangeDeclare(
-		exchange,   // name
+		exchange, // name
 		"direct", // type
 		true,     // durable
 		false,    // auto-deleted
@@ -57,18 +58,18 @@ func Read(urlString string, exchange string, queue string) {
 	failOnError(err, "Failed to declare an exchange")
 
 	q, err := ch.QueueDeclare(
-	  queue, // name
-	  true,   // durable
-	  false,   // delete when unused
-	  false,   // exclusive
-	  false,   // no-wait
-	  nil,     // arguments
+		queue, // name
+		true,  // durable
+		false, // delete when unused
+		false, // exclusive
+		false, // no-wait
+		nil,   // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
 
 	err = ch.QueueBind(
-		q.Name, // queue name
-		q.Name,     // routing key
+		q.Name,   // queue name
+		q.Name,   // routing key
 		exchange, // exchange
 		false,
 		nil,
@@ -77,7 +78,7 @@ func Read(urlString string, exchange string, queue string) {
 	msgs, err := ch.Consume(
 		q.Name, // queue
 		"",     // consumer
-		false,   // auto-ack
+		false,  // auto-ack
 		false,  // exclusive
 		false,  // no-local
 		false,  // no-wait
@@ -104,22 +105,33 @@ func Read(urlString string, exchange string, queue string) {
 }
 
 // ----------------------------------------------------------------------------
-func handler(ctx context.Context, g2engine g2engine.G2engine, msgs <-chan amqp.Delivery){
+func handler(ctx context.Context, g2engine g2engine.G2engine, msgs <-chan amqp.Delivery) {
 	for d := range msgs {
 		fmt.Printf("Received a message: %s\n", d.Body)
 		record, newRecordErr := szrecord.NewRecord(string(d.Body))
 		if newRecordErr == nil {
 
 			loadID := "Load"
-			var flags int64 = 0
+			if viper.GetBool("withInfo") {
+				var flags int64 = 0
+				withInfo, withInfoErr := g2engine.AddRecordWithInfo(ctx, record.DataSource, record.Id, record.Json, loadID, flags)
+				if withInfoErr != nil {
+					logger.LogMessage(MessageIdFormat, 2002, withInfoErr.Error())
+				} else {
+					//TODO:  what do we do with the record here?
+					fmt.Printf("Record Added: %s:%s:%s\n", loadID, record.DataSource, record.Id)
+					fmt.Printf("WithInfo: %s\n", withInfo)
+				}
+			} else {
+				addRecordErr := g2engine.AddRecord(ctx, record.DataSource, record.Id, record.Json, loadID)
+				if addRecordErr != nil {
+					logger.LogMessage(MessageIdFormat, 2003, addRecordErr.Error())
+				} else {
+					fmt.Printf("Record Added: %s:%s:%s\n", loadID, record.DataSource, record.Id)
+				}
 
-			withInfo, withInfoErr := g2engine.AddRecordWithInfo(ctx, record.DataSource, record.Id, record.Json, loadID, flags)
-			if withInfoErr != nil {
-				logger.LogMessage(MessageIdFormat, 2002, withInfoErr.Error())
-				//TODO:  what do we do with the record here?
 			}
 
-			fmt.Printf("WithInfo: %s\n", withInfo)
 			// when we successfully process a delivery, Ack it.
 			d.Ack(false)
 			// when there's an issue with a delivery should we requeue it?

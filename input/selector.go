@@ -52,7 +52,7 @@ func Read() bool {
 			return false
 		}
 	default:
-		fmt.Println("Unknown input mechanism: %s", u.Scheme)
+		fmt.Println("Unknown input mechanism: ", u.Scheme)
 	}
 	return true
 }

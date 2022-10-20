@@ -27,6 +27,7 @@ var (
 	inputQueue string = "senzing_input"
 	inputURL   string // read from this URL, could be a file or a queue
 	logLevel   string = "error"
+	withInfo   bool   = false
 )
 
 // load is 6201:  https://github.com/Senzing/knowledge-base/blob/main/lists/senzing-product-ids.md
@@ -75,7 +76,8 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
 
 	// Cobra also supports local flags, which will only run
-	// when this action is called directly.	RootCmd.Flags().StringVarP(&exchange, "exchange", "", "", "Message queue exchange name")
+	// when this action is called directly.
+	RootCmd.Flags().StringVarP(&exchange, "exchange", "", "", "Message queue exchange name")
 	viper.BindPFlag("exchange", RootCmd.Flags().Lookup("exchange"))
 	RootCmd.Flags().StringVarP(&fileType, "fileType", "", "", "file type override")
 	viper.BindPFlag("fileType", RootCmd.Flags().Lookup("fileType"))
@@ -85,6 +87,8 @@ func init() {
 	viper.BindPFlag("inputURL", RootCmd.Flags().Lookup("inputURL"))
 	RootCmd.Flags().StringVarP(&logLevel, "logLevel", "", "", "set the logging level, default Error")
 	viper.BindPFlag("logLevel", RootCmd.Flags().Lookup("logLevel"))
+	RootCmd.Flags().BoolP("withInfo", "", false, "set to add record withInfo")
+	viper.BindPFlag("withInfo", RootCmd.Flags().Lookup("withInfo"))
 }
 
 // ----------------------------------------------------------------------------
@@ -126,10 +130,12 @@ func initConfig() {
 	viper.BindEnv("inputQueue")
 	viper.BindEnv("inputURL")
 	viper.BindEnv("logLevel")
+	viper.BindEnv("withInfo")
 
 	viper.SetDefault("exchange", "senzing")
 	viper.SetDefault("inputQueue", "senzing-input")
 	viper.SetDefault("logLevel", "error")
+	viper.SetDefault("withInfo", false)
 
 	// setup local variables, in case they came from a config file
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
@@ -139,6 +145,7 @@ func initConfig() {
 	inputQueue = viper.GetString("inputQueue")
 	inputURL = viper.GetString("inputURL")
 	logLevel = viper.GetString("logLevel")
+	withInfo = viper.GetBool("withInfo")
 
 	setLogLevel()
 }
