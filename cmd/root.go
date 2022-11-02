@@ -91,7 +91,7 @@ func init() {
 	viper.BindPFlag("logLevel", RootCmd.Flags().Lookup("logLevel"))
 	RootCmd.Flags().BoolP("withInfo", "", false, "set to add record withInfo")
 	viper.BindPFlag("withInfo", RootCmd.Flags().Lookup("withInfo"))
-	fmt.Println("init-->>", inputURL)
+	fmt.Printf("init-->>%s\n", inputURL)
 }
 
 // ----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ func initConfig() {
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")
 
-	fmt.Println("-->>", inputURL)
+	fmt.Printf("-->>%s\n", inputURL)
 	setLogLevel()
 }
 
