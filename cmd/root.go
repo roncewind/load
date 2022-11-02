@@ -135,6 +135,8 @@ func initConfig() {
 	viper.BindEnv("logLevel")
 	viper.BindEnv("withInfo")
 
+	// cmdline args should get set in viper, but for some reason that's
+	// not happening when called from senzing-tools, this is the work around:
 	if len(exchange) > 0 {
 		viper.Set("exchange", exchange)
 	}
@@ -153,8 +155,6 @@ func initConfig() {
 	if withInfo {
 		viper.Set("withInfo", withInfo)
 	}
-	fmt.Printf("from viper-->>%s\n", viper.GetString("inputURL"))
-	fmt.Printf("var-->>%s\n", inputURL)
 
 	viper.SetDefault("exchange", "senzing")
 	viper.SetDefault("inputQueue", "senzing-input")
@@ -163,16 +163,15 @@ func initConfig() {
 
 	// setup local variables, in case they came from a config file
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
-	//  automatically, this is only IF the var is in the config file
-	//FIXME:  this over writes cmdline args when used from senzing-tools
-
+	//  automatically, this is only IF the var is in the config file.
+	//  am i missing a way to bind config file vars to local vars?
 	exchange = viper.GetString("exchange")
 	fileType = viper.GetString("fileType")
 	inputQueue = viper.GetString("inputQueue")
 	inputURL = viper.GetString("inputURL")
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")
-	fmt.Printf("2-->>%s\n", inputURL)
+
 	setLogLevel()
 }
 
