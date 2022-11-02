@@ -135,8 +135,10 @@ func initConfig() {
 	viper.BindEnv("logLevel")
 	viper.BindEnv("withInfo")
 
-	fmt.Printf("var-->>%s\n", inputURL)
+	viper.Set("inputURL", inputURL)
 	fmt.Printf("from viper-->>%s\n", viper.GetString("inputURL"))
+	fmt.Printf("var-->>%s\n", inputURL)
+
 	viper.SetDefault("exchange", "senzing")
 	viper.SetDefault("inputQueue", "senzing-input")
 	viper.SetDefault("logLevel", "error")
