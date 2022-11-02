@@ -145,7 +145,7 @@ func initConfig() {
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
 	//  automatically, this is only IF the var is in the config file
 	//FIXME:  this over writes cmdline args when used from senzing-tools
-	// fmt.Printf("1-->>%s\n", inputURL)
+	fmt.Printf("1-->>%s\n", inputURL)
 	// exchange = viper.GetString("exchange")
 	// fileType = viper.GetString("fileType")
 	// inputQueue = viper.GetString("inputQueue")
