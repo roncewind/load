@@ -91,7 +91,6 @@ func init() {
 	viper.BindPFlag("logLevel", RootCmd.Flags().Lookup("logLevel"))
 	RootCmd.Flags().BoolP("withInfo", "", false, "set to add record withInfo")
 	viper.BindPFlag("withInfo", RootCmd.Flags().Lookup("withInfo"))
-	fmt.Printf("init-->>%s\n", inputURL)
 }
 
 // ----------------------------------------------------------------------------
@@ -136,6 +135,8 @@ func initConfig() {
 	viper.BindEnv("logLevel")
 	viper.BindEnv("withInfo")
 
+	fmt.Printf("var-->>%s\n", inputURL)
+	fmt.Printf("from viper-->>%s\n", viper.GetString("inputURL"))
 	viper.SetDefault("exchange", "senzing")
 	viper.SetDefault("inputQueue", "senzing-input")
 	viper.SetDefault("logLevel", "error")
@@ -145,7 +146,7 @@ func initConfig() {
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
 	//  automatically, this is only IF the var is in the config file
 	//FIXME:  this over writes cmdline args when used from senzing-tools
-	fmt.Printf("1-->>%s\n", inputURL)
+
 	// exchange = viper.GetString("exchange")
 	// fileType = viper.GetString("fileType")
 	// inputQueue = viper.GetString("inputQueue")
