@@ -140,18 +140,19 @@ func initConfig() {
 	viper.SetDefault("inputQueue", "senzing-input")
 	viper.SetDefault("logLevel", "error")
 	viper.SetDefault("withInfo", false)
-	fmt.Printf("1-->>%s\n", inputURL)
+
 	// setup local variables, in case they came from a config file
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
 	//  automatically, this is only IF the var is in the config file
-	exchange = viper.GetString("exchange")
-	fileType = viper.GetString("fileType")
-	inputQueue = viper.GetString("inputQueue")
-	inputURL = viper.GetString("inputURL")
-	logLevel = viper.GetString("logLevel")
-	withInfo = viper.GetBool("withInfo")
-
-	fmt.Printf("2-->>%s\n", inputURL)
+	//FIXME:  this over writes cmdline args when used from senzing-tools
+	// fmt.Printf("1-->>%s\n", inputURL)
+	// exchange = viper.GetString("exchange")
+	// fileType = viper.GetString("fileType")
+	// inputQueue = viper.GetString("inputQueue")
+	// inputURL = viper.GetString("inputURL")
+	// logLevel = viper.GetString("logLevel")
+	// withInfo = viper.GetBool("withInfo")
+	// fmt.Printf("2-->>%s\n", inputURL)
 	setLogLevel()
 }
 
