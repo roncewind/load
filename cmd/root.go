@@ -150,6 +150,7 @@ func initConfig() {
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")
 
+	fmt.Println("-->>", inputURL)
 	setLogLevel()
 }
 
