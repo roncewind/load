@@ -3,7 +3,7 @@ module github.com/roncewind/load
 go 1.18
 
 require (
-	github.com/docktermj/g2-sdk-go v0.0.0-20221007221454-b587be5e80b7
+	github.com/docktermj/g2-sdk-go v0.0.0-20221101220831-bc79f3f73f8a
 	github.com/docktermj/go-xyzzy-helpers v0.0.0-20221007181716-66fb46bff36f
 	github.com/rabbitmq/amqp091-go v1.3.4
 	github.com/roncewind/szrecord v0.0.7
@@ -19,6 +19,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
+	github.com/senzing/go-logging v1.0.0 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

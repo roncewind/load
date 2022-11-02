@@ -203,7 +203,7 @@ run:
 	GOOS=linux \
 	GOARCH=amd64 \
 	go run . \
-		--inputURL "amqp://guest:guest@192.168.6.96:5672"
+		--inputURL "amqp://guest:guest@192.168.6.118:5672"
 
 # -----------------------------------------------------------------------------
 # docker-build

@@ -63,6 +63,7 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the RootCmd.
 func Execute() {
+	fmt.Println("start Execute")
 	err := RootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -71,6 +72,7 @@ func Execute() {
 
 // ----------------------------------------------------------------------------
 func init() {
+	fmt.Println("start init")
 	cobra.OnInitialize(initConfig)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
@@ -98,6 +100,7 @@ func init() {
 // - env vars
 // - config file
 func initConfig() {
+	fmt.Println("start initConfig")
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
