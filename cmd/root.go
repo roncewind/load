@@ -135,7 +135,24 @@ func initConfig() {
 	viper.BindEnv("logLevel")
 	viper.BindEnv("withInfo")
 
-	viper.Set("inputURL", inputURL)
+	if len(exchange) > 0 {
+		viper.Set("exchange", exchange)
+	}
+	if len(fileType) > 0 {
+		viper.Set("fileType", fileType)
+	}
+	if len(inputQueue) > 0 {
+		viper.Set("inputQueue", inputQueue)
+	}
+	if len(inputURL) > 0 {
+		viper.Set("inputURL", inputURL)
+	}
+	if len(logLevel) > 0 {
+		viper.Set("logLevel", logLevel)
+	}
+	if withInfo {
+		viper.Set("withInfo", withInfo)
+	}
 	fmt.Printf("from viper-->>%s\n", viper.GetString("inputURL"))
 	fmt.Printf("var-->>%s\n", inputURL)
 
@@ -149,13 +166,13 @@ func initConfig() {
 	//  automatically, this is only IF the var is in the config file
 	//FIXME:  this over writes cmdline args when used from senzing-tools
 
-	// exchange = viper.GetString("exchange")
-	// fileType = viper.GetString("fileType")
-	// inputQueue = viper.GetString("inputQueue")
-	// inputURL = viper.GetString("inputURL")
-	// logLevel = viper.GetString("logLevel")
-	// withInfo = viper.GetBool("withInfo")
-	// fmt.Printf("2-->>%s\n", inputURL)
+	exchange = viper.GetString("exchange")
+	fileType = viper.GetString("fileType")
+	inputQueue = viper.GetString("inputQueue")
+	inputURL = viper.GetString("inputURL")
+	logLevel = viper.GetString("logLevel")
+	withInfo = viper.GetBool("withInfo")
+	fmt.Printf("2-->>%s\n", inputURL)
 	setLogLevel()
 }
 
