@@ -140,7 +140,7 @@ func initConfig() {
 	viper.SetDefault("inputQueue", "senzing-input")
 	viper.SetDefault("logLevel", "error")
 	viper.SetDefault("withInfo", false)
-
+	fmt.Printf("1-->>%s\n", inputURL)
 	// setup local variables, in case they came from a config file
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
 	//  automatically, this is only IF the var is in the config file
@@ -151,7 +151,7 @@ func initConfig() {
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")
 
-	fmt.Printf("-->>%s\n", inputURL)
+	fmt.Printf("2-->>%s\n", inputURL)
 	setLogLevel()
 }
 
