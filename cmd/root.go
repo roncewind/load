@@ -46,7 +46,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("start Run")
+		fmt.Println("start load Run")
 		fmt.Println("viper key list:")
 		for _, key := range viper.AllKeys() {
 			fmt.Println("  - ", key, " = ", viper.Get(key))
@@ -63,7 +63,7 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the RootCmd.
 func Execute() {
-	fmt.Println("start Execute")
+	fmt.Println("start load Execute")
 	err := RootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -72,7 +72,7 @@ func Execute() {
 
 // ----------------------------------------------------------------------------
 func init() {
-	fmt.Println("start init")
+	fmt.Println("start load init")
 	cobra.OnInitialize(initConfig)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
@@ -100,7 +100,7 @@ func init() {
 // - env vars
 // - config file
 func initConfig() {
-	fmt.Println("start initConfig")
+	fmt.Println("start load initConfig")
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
