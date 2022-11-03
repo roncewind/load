@@ -107,10 +107,11 @@ func Read(urlString string, exchange string, queue string) {
 // ----------------------------------------------------------------------------
 func handler(ctx context.Context, g2engine g2engine.G2engine, msgs <-chan amqp.Delivery) {
 	for d := range msgs {
-		fmt.Printf("Received a message: %s\n", d.Body)
+		fmt.Printf("Received a message- msgId: %s, msgCnt: %d\n", d.MessageId, d.MessageCount)
 		record, newRecordErr := szrecord.NewRecord(string(d.Body))
 		if newRecordErr == nil {
 
+			fmt.Printf("Processing record: %s\n", record.Id)
 			loadID := "Load"
 			if viper.GetBool("withInfo") {
 				var flags int64 = 0
@@ -119,7 +120,7 @@ func handler(ctx context.Context, g2engine g2engine.G2engine, msgs <-chan amqp.D
 					logger.LogMessage(MessageIdFormat, 2002, withInfoErr.Error())
 				} else {
 					//TODO:  what do we do with the record here?
-					fmt.Printf("Record Added: %s:%s:%s\n", loadID, record.DataSource, record.Id)
+					fmt.Printf("Record[%s] Added: %s:%s:%s\n", d.MessageId, loadID, record.DataSource, record.Id)
 					fmt.Printf("WithInfo: %s\n", withInfo)
 				}
 			} else {
@@ -127,7 +128,7 @@ func handler(ctx context.Context, g2engine g2engine.G2engine, msgs <-chan amqp.D
 				if addRecordErr != nil {
 					logger.LogMessage(MessageIdFormat, 2003, addRecordErr.Error())
 				} else {
-					fmt.Printf("Record Added: %s:%s:%s\n", loadID, record.DataSource, record.Id)
+					fmt.Printf("Record[%s] Added: %s:%s:%s\n", d.MessageId, loadID, record.DataSource, record.Id)
 				}
 
 			}
