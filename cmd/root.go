@@ -7,15 +7,15 @@ import (
 	// "encoding/json"
 	// "errors"
 	"fmt"
-	"strings"
 
 	// "net"
 	// "net/http"
 	// "net/url"
 	"os"
 
-	"github.com/docktermj/go-xyzzy-helpers/logger"
 	"github.com/roncewind/load/input"
+	"github.com/senzing/go-logging/messagelogger"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -26,12 +26,25 @@ var (
 	fileType   string //TODO: load from file
 	inputQueue string = "senzing_input"
 	inputURL   string // read from this URL, could be a file or a queue
-	logLevel   string = "error"
-	withInfo   bool   = false
+	logLevel   string = "warn"
+	logger     messagelogger.MessageLoggerInterface
+	withInfo   bool = false
 )
 
 // load is 6201:  https://github.com/Senzing/knowledge-base/blob/main/lists/senzing-product-ids.md
-const MessageIdFormat = "senzing-6201%04d"
+const productIdentifier = 6201
+
+var idMessages = map[int]string{
+	0:    "Logger initialized.",
+	5:    "The favorite number for %s is %d.",
+	6:    "Person number #%[2]d is %[1]s.",
+	10:   "Example errors.",
+	11:   "%s has a score of %d.",
+	999:  "A test of INFO.",
+	1000: "A test of WARN.",
+	2000: "A test of ERROR.",
+	2001: "Config file found, but not loaded",
+}
 
 // ----------------------------------------------------------------------------
 // RootCmd represents the base command when called without any subcommands
@@ -72,7 +85,10 @@ func Execute() {
 
 // ----------------------------------------------------------------------------
 func init() {
+
 	fmt.Println("start load init")
+	logger, _ := messagelogger.NewSenzingLogger(productIdentifier, idMessages)
+	logger.Log(0)
 	cobra.OnInitialize(initConfig)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
@@ -122,7 +138,7 @@ func initConfig() {
 			// Config file not found; ignore error
 		} else {
 			// Config file was found but another error was produced
-			logger.LogMessageFromError(MessageIdFormat, 2001, "Config file found, but not loaded", err)
+			logger.Log(2001, err)
 		}
 	}
 	viper.AutomaticEnv() // read in environment variables that match
@@ -172,29 +188,7 @@ func initConfig() {
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")
 
-	setLogLevel()
-}
-
-// ----------------------------------------------------------------------------
-func setLogLevel() {
-	var level logger.Level = logger.LevelError
-	if viper.IsSet("logLevel") {
-		switch strings.ToUpper(logLevel) {
-		case logger.LevelDebugName:
-			level = logger.LevelDebug
-		case logger.LevelErrorName:
-			level = logger.LevelError
-		case logger.LevelFatalName:
-			level = logger.LevelFatal
-		case logger.LevelInfoName:
-			level = logger.LevelInfo
-		case logger.LevelPanicName:
-			level = logger.LevelPanic
-		case logger.LevelTraceName:
-			level = logger.LevelTrace
-		case logger.LevelWarnName:
-			level = logger.LevelWarn
-		}
-		logger.SetLevel(level)
-	}
+	fmt.Println("loglevel = ", logLevel)
+	fmt.Printf("%v", logger)
+	logger.SetLogLevelFromString("INFO")
 }
