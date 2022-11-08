@@ -4,18 +4,11 @@ Copyright © 2022 roncewind <dad@lynntribe.net>
 package cmd
 
 import (
-	// "encoding/json"
-	// "errors"
 	"fmt"
-
-	// "net"
-	// "net/http"
-	// "net/url"
 	"os"
 
 	"github.com/roncewind/load/input"
 	"github.com/senzing/go-logging/messagelogger"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -87,14 +80,13 @@ func Execute() {
 func init() {
 
 	fmt.Println("start load init")
-	logger, _ := messagelogger.NewSenzingLogger(productIdentifier, idMessages)
+	logger, _ = messagelogger.NewSenzingLogger(productIdentifier, idMessages)
 	logger.Log(0)
 	cobra.OnInitialize(initConfig)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	// local flags for load
 	RootCmd.Flags().StringVarP(&exchange, "exchange", "", "", "Message queue exchange name")
 	viper.BindPFlag("exchange", RootCmd.Flags().Lookup("exchange"))
 	RootCmd.Flags().StringVarP(&fileType, "fileType", "", "", "file type override")
@@ -117,6 +109,7 @@ func init() {
 // - config file
 func initConfig() {
 	fmt.Println("start load initConfig")
+	fmt.Printf("logger: %v\n", logger)
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -188,7 +181,5 @@ func initConfig() {
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")
 
-	fmt.Println("loglevel = ", logLevel)
-	fmt.Printf("%v", logger)
-	logger.SetLogLevelFromString("INFO")
+	logger.SetLogLevelFromString(logLevel)
 }
