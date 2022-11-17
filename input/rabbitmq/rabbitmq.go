@@ -2,14 +2,7 @@ package rabbitmq
 
 import (
 	"context"
-	// "encoding/json"
-	// "errors"
 	"fmt"
-	// "log"
-	// "net"
-	// "net/http"
-	// "net/url"
-	// "os"
 
 	"github.com/docktermj/g2-sdk-go/g2engine"
 	"github.com/docktermj/go-xyzzy-helpers/g2configuration"
@@ -17,8 +10,6 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/roncewind/szrecord"
 	"github.com/spf13/viper"
-	// "github.com/spf13/cobra"
-	// "github.com/spf13/viper"
 )
 
 // load is 6201:  https://github.com/Senzing/knowledge-base/blob/main/lists/senzing-product-ids.md

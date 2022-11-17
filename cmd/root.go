@@ -4,10 +4,10 @@ Copyright © 2022 roncewind <dad@lynntribe.net>
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/roncewind/load/input"
+	"github.com/senzing/go-logging/logger"
 	"github.com/senzing/go-logging/messagelogger"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -19,8 +19,8 @@ var (
 	fileType   string //TODO: load from file
 	inputQueue string = "senzing_input"
 	inputURL   string // read from this URL, could be a file or a queue
-	logLevel   string = "warn"
-	logger     messagelogger.MessageLoggerInterface
+	logLevel   string = "info"
+	msglog     messagelogger.MessageLoggerInterface
 	withInfo   bool = false
 )
 
@@ -28,10 +28,8 @@ var (
 const productIdentifier = 6201
 
 var idMessages = map[int]string{
-	0:    "Logger initialized.",
-	5:    "The favorite number for %s is %d.",
-	6:    "Person number #%[2]d is %[1]s.",
-	10:   "Example errors.",
+	1:    "Viper key list:",
+	2:    "  - %s = %s",
 	11:   "%s has a score of %d.",
 	999:  "A test of INFO.",
 	1000: "A test of WARN.",
@@ -44,20 +42,20 @@ var idMessages = map[int]string{
 var RootCmd = &cobra.Command{
 	Use:   "load",
 	Short: "Load records into Senzing",
-	Long: `TODO: A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Long: `TODO: Load records from somewhere...
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	For example:
+
+load --inputURL "amqp://guest:guest@192.168.6.128:5672
+`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("start load Run")
-		fmt.Println("viper key list:")
-		for _, key := range viper.AllKeys() {
-			fmt.Println("  - ", key, " = ", viper.Get(key))
+		if msglog.IsInfo() {
+			msglog.Log(1, logger.LevelInfo)
+			for _, key := range viper.AllKeys() {
+				msglog.Log(2, key, viper.Get(key), logger.LevelInfo)
+			}
 		}
-
 		if !input.Read() {
 			cmd.Help()
 		}
@@ -69,7 +67,6 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the RootCmd.
 func Execute() {
-	fmt.Println("start load Execute")
 	err := RootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -78,10 +75,7 @@ func Execute() {
 
 // ----------------------------------------------------------------------------
 func init() {
-
-	fmt.Println("start load init")
-	logger, _ = messagelogger.NewSenzingLogger(productIdentifier, idMessages)
-	logger.Log(0)
+	msglog, _ = messagelogger.NewSenzingLogger(productIdentifier, idMessages)
 	cobra.OnInitialize(initConfig)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
@@ -108,8 +102,6 @@ func init() {
 // - env vars
 // - config file
 func initConfig() {
-	fmt.Println("start load initConfig")
-	fmt.Printf("logger: %v\n", logger)
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -131,7 +123,7 @@ func initConfig() {
 			// Config file not found; ignore error
 		} else {
 			// Config file was found but another error was produced
-			logger.Log(2001, err)
+			msglog.Log(2001, err)
 		}
 	}
 	viper.AutomaticEnv() // read in environment variables that match
@@ -167,7 +159,7 @@ func initConfig() {
 
 	viper.SetDefault("exchange", "senzing")
 	viper.SetDefault("inputQueue", "senzing-input")
-	viper.SetDefault("logLevel", "error")
+	viper.SetDefault("logLevel", "info")
 	viper.SetDefault("withInfo", false)
 
 	// setup local variables, in case they came from a config file
@@ -181,5 +173,5 @@ func initConfig() {
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")
 
-	logger.SetLogLevelFromString(logLevel)
+	msglog.SetLogLevelFromString(logLevel)
 }
