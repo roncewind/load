@@ -3,14 +3,18 @@ module github.com/roncewind/load
 go 1.18
 
 require (
-	github.com/docktermj/g2-sdk-go v0.0.0-20221101220831-bc79f3f73f8a
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
 	github.com/rabbitmq/amqp091-go v1.5.0
+	github.com/roncewind/move v0.0.0-20221230201057-6955f4897d74
 	github.com/roncewind/szrecord v0.0.7
-	github.com/senzing/go-logging v1.0.1
+	github.com/senzing/g2-sdk-go v0.2.4
+	github.com/senzing/go-helpers v0.1.0
+	github.com/senzing/go-logging v1.1.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.13.0
 )
+
+replace github.com/roncewind/move => ../move
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect

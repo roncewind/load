@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/docktermj/g2-sdk-go/g2engine"
-	"github.com/docktermj/go-xyzzy-helpers/g2configuration"
 	"github.com/docktermj/go-xyzzy-helpers/logger"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/roncewind/move/io/rabbitmq/managedconsumer"
 	"github.com/roncewind/szrecord"
+	"github.com/senzing/g2-sdk-go/g2engine"
+	"github.com/senzing/go-helpers/g2engineconfigurationjson"
 	"github.com/spf13/viper"
 )
 
@@ -17,7 +18,25 @@ const MessageIdFormat = "senzing-6201%04d"
 
 // ----------------------------------------------------------------------------
 // TODO: rename
-func Read(urlString string, exchange string, queue string) {
+func Read(urlString string, exchangeName string, queueName string) {
+
+	ctx := context.TODO()
+
+	// Work with G2engine.
+
+	g2engine, g2engineErr := getG2engine(ctx)
+	if g2engineErr != nil {
+		logger.LogMessage(MessageIdFormat, 2000, g2engineErr.Error())
+		failOnError(g2engineErr, "Unable to reach G2")
+	}
+
+	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
+	managedconsumer.StartManagedConsumer(exchangeName, queueName, urlString, 3, g2engine, false)
+}
+
+// ----------------------------------------------------------------------------
+// TODO: rename
+func ReadXXX(urlString string, exchange string, queue string) {
 
 	ctx := context.TODO()
 
@@ -98,7 +117,7 @@ func Read(urlString string, exchange string, queue string) {
 // ----------------------------------------------------------------------------
 func handler(ctx context.Context, g2engine g2engine.G2engine, msgs <-chan amqp.Delivery) {
 	for d := range msgs {
-		fmt.Printf("Received a message- msgId: %s, msgCnt: %d\n", d.MessageId, d.MessageCount)
+		fmt.Printf("Received a message- msgId: %s, msgCnt: %d, ConsumerTag: %s\n", d.MessageId, d.MessageCount, d.ConsumerTag)
 		record, newRecordErr := szrecord.NewRecord(string(d.Body))
 		if newRecordErr == nil {
 
@@ -146,7 +165,7 @@ func getG2engine(ctx context.Context) (g2engine.G2engine, error) {
 
 	moduleName := "Load"
 	verboseLogging := 0 // 0 for no Senzing logging; 1 for logging
-	iniParams, jsonErr := g2configuration.BuildSimpleSystemConfigurationJson("")
+	iniParams, jsonErr := g2engineconfigurationjson.BuildSimpleSystemConfigurationJson("")
 	if jsonErr != nil {
 		return &g2engine, jsonErr
 	}
