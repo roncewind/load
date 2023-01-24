@@ -25,6 +25,8 @@ func Read(urlString string, exchangeName string, queueName string) {
 	// Work with G2engine.
 
 	g2engine, g2engineErr := getG2engine(ctx)
+	defer g2engine.Destroy(ctx)
+
 	if g2engineErr != nil {
 		logger.LogMessage(MessageIdFormat, 2000, g2engineErr.Error())
 		failOnError(g2engineErr, "Unable to reach G2")
@@ -32,6 +34,7 @@ func Read(urlString string, exchangeName string, queueName string) {
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	managedconsumer.StartManagedConsumer(exchangeName, queueName, urlString, 3, g2engine, false)
+
 }
 
 // ----------------------------------------------------------------------------
