@@ -33,7 +33,7 @@ func Read(urlString string, exchangeName string, queueName string) {
 	}
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
-	managedconsumer.StartManagedConsumer(exchangeName, queueName, urlString, 3, g2engine, false)
+	<-managedconsumer.StartManagedConsumer(exchangeName, queueName, urlString, 3, g2engine, false)
 
 }
 
