@@ -78,6 +78,8 @@ func Read() bool {
 		} else {
 			return false
 		}
+	case "sqs":
+		msglog.Log(2001, u.Scheme, messagelogger.LevelWarn)
 	default:
 		msglog.Log(2001, u.Scheme, messagelogger.LevelWarn)
 	}
