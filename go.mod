@@ -12,7 +12,10 @@ require (
 	github.com/spf13/viper v1.13.0
 )
 
-replace github.com/roncewind/move => ../move
+replace (
+	github.com/roncewind/go-util => ../go-util
+	github.com/roncewind/move => ../move
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
@@ -23,6 +26,7 @@ require (
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/rabbitmq/amqp091-go v1.5.0 // indirect
+	github.com/roncewind/go-util v0.0.0-20230209152928-5d0b8b2f7ebd // indirect
 	github.com/roncewind/szrecord v0.0.7 // indirect
 	github.com/roncewind/workerpool v0.0.1 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
