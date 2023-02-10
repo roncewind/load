@@ -4,9 +4,7 @@ go 1.18
 
 require (
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
-	github.com/rabbitmq/amqp091-go v1.5.0
 	github.com/roncewind/move v0.0.0-20221230201057-6955f4897d74
-	github.com/roncewind/szrecord v0.0.7
 	github.com/senzing/g2-sdk-go v0.2.4
 	github.com/senzing/go-helpers v0.1.0
 	github.com/senzing/go-logging v1.1.1
@@ -24,6 +22,8 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
+	github.com/rabbitmq/amqp091-go v1.5.0 // indirect
+	github.com/roncewind/szrecord v0.0.7 // indirect
 	github.com/roncewind/workerpool v0.0.1 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
