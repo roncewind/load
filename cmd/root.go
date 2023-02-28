@@ -81,12 +81,8 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
 
 	// local flags for load
-	RootCmd.Flags().StringVarP(&exchange, "exchange", "", "", "Message queue exchange name")
-	viper.BindPFlag("exchange", RootCmd.Flags().Lookup("exchange"))
 	RootCmd.Flags().StringVarP(&fileType, "fileType", "", "", "file type override")
 	viper.BindPFlag("fileType", RootCmd.Flags().Lookup("fileType"))
-	RootCmd.Flags().StringVarP(&inputQueue, "inputQueue", "", "", "Senzing input queue name")
-	viper.BindPFlag("inputQueue", RootCmd.Flags().Lookup("inputQueue"))
 	RootCmd.Flags().StringVarP(&inputURL, "inputURL", "i", "", "input location")
 	viper.BindPFlag("inputURL", RootCmd.Flags().Lookup("inputURL"))
 	RootCmd.Flags().StringVarP(&logLevel, "logLevel", "", "", "set the logging level, default Error")
@@ -129,23 +125,15 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 	// all env vars should be prefixed with "SENZING_TOOLS_"
 	viper.SetEnvPrefix("senzing_tools")
-	viper.BindEnv("exchange")
 	viper.BindEnv("fileType")
-	viper.BindEnv("inputQueue")
 	viper.BindEnv("inputURL")
 	viper.BindEnv("logLevel")
 	viper.BindEnv("withInfo")
 
 	// cmdline args should get set in viper, but for some reason that's
 	// not happening when called from senzing-tools, this is the work around:
-	if len(exchange) > 0 {
-		viper.Set("exchange", exchange)
-	}
 	if len(fileType) > 0 {
 		viper.Set("fileType", fileType)
-	}
-	if len(inputQueue) > 0 {
-		viper.Set("inputQueue", inputQueue)
 	}
 	if len(inputURL) > 0 {
 		viper.Set("inputURL", inputURL)
@@ -157,8 +145,6 @@ func initConfig() {
 		viper.Set("withInfo", withInfo)
 	}
 
-	viper.SetDefault("exchange", "senzing")
-	viper.SetDefault("inputQueue", "senzing-input")
 	viper.SetDefault("logLevel", "info")
 	viper.SetDefault("withInfo", false)
 
@@ -166,9 +152,7 @@ func initConfig() {
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
 	//  automatically, this is only IF the var is in the config file.
 	//  am i missing a way to bind config file vars to local vars?
-	exchange = viper.GetString("exchange")
 	fileType = viper.GetString("fileType")
-	inputQueue = viper.GetString("inputQueue")
 	inputURL = viper.GetString("inputURL")
 	logLevel = viper.GetString("logLevel")
 	withInfo = viper.GetBool("withInfo")

@@ -71,10 +71,8 @@ func Read() bool {
 	u := parseURL(viper.GetString("inputURL"))
 	switch u.Scheme {
 	case "amqp":
-		if viper.IsSet("inputURL") &&
-			viper.IsSet("exchange") &&
-			viper.IsSet("inputQueue") {
-			rabbitmq.Read(viper.GetString("inputURL"), viper.GetString("exchange"), viper.GetString("inputQueue"))
+		if viper.IsSet("inputURL") {
+			rabbitmq.Read(viper.GetString("inputURL"))
 		} else {
 			return false
 		}
