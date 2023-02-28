@@ -4,6 +4,7 @@ Copyright © 2022 roncewind <dad@lynntribe.net>
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -64,10 +65,11 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 		if msglog.IsInfo() {
 			msglog.Log(1, logger.LevelInfo)
 			for _, key := range viper.AllKeys() {
-				msglog.Log(2, key, viper.Get(key), logger.LevelInfo)
+				// msglog.Log(2, key, viper.Get(key), logger.LevelInfo)
+				fmt.Println(key, ":", viper.Get(key))
 			}
 		}
-		if !input.Read(viper.GetString(inputURL), viper.GetString(logLevelParameter)) {
+		if !input.Read(inputURL, logLevel) {
 			cmd.Help()
 		}
 

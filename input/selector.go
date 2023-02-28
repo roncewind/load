@@ -1,6 +1,7 @@
 package input
 
 import (
+	"fmt"
 	"net"
 	"net/url"
 
@@ -36,15 +37,19 @@ func parseURL(urlString string) *url.URL {
 		panic(err)
 	}
 
-	msglog.Log(21, u.Scheme, messagelogger.LevelInfo)
-	msglog.Log(22, u.User, messagelogger.LevelInfo)
-	msglog.Log(23, u.User.Username(), messagelogger.LevelInfo)
+	// msglog.Log(21, u.Scheme, messagelogger.LevelInfo)
+	// msglog.Log(22, u.User, messagelogger.LevelInfo)
+	// msglog.Log(23, u.User.Username(), messagelogger.LevelInfo)
+	fmt.Println("Scheme:", u.Scheme)
+	fmt.Println("User:", u.User)
+	fmt.Println("User.Username():", u.User.Username())
 	p, _ := u.User.Password()
-	if len(p) > 0 {
-		msglog.Log(24, "SET, redacted from logs", messagelogger.LevelInfo)
-	} else {
-		msglog.Log(24, "NOT SET", messagelogger.LevelInfo)
-	}
+	fmt.Println("User.Password():", p)
+	// if len(p) > 0 {
+	// 	msglog.Log(24, "SET, redacted from logs", messagelogger.LevelInfo)
+	// } else {
+	// 	msglog.Log(24, "NOT SET", messagelogger.LevelInfo)
+	// }
 
 	msglog.Log(25, u.Host, messagelogger.LevelInfo)
 	host, port, _ := net.SplitHostPort(u.Host)
@@ -57,6 +62,7 @@ func parseURL(urlString string) *url.URL {
 	msglog.Log(30, u.RawQuery, messagelogger.LevelInfo)
 	m, _ := url.ParseQuery(u.RawQuery)
 	msglog.Log(31, m, messagelogger.LevelInfo)
+	fmt.Println("Query:", m)
 
 	return u
 }

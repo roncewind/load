@@ -3,6 +3,7 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/docktermj/go-xyzzy-helpers/logger"
 	"github.com/roncewind/move/io/rabbitmq/managedconsumer"
@@ -21,15 +22,27 @@ func Read(urlString string) {
 
 	// Work with G2engine.
 	senzingFactory := &factory.SdkAbstractFactoryImpl{}
+	g2Config, err := senzingFactory.GetG2config(ctx)
+	if err != nil {
+		failOnError(err, "Unable to retrieve the config")
+	}
 	g2engine, err := senzingFactory.GetG2engine(ctx)
 
 	if err != nil {
 		logger.LogMessage(MessageIdFormat, 2000, err.Error())
 		failOnError(err, "Unable to reach G2")
 	}
-	defer g2engine.Destroy(ctx)
+	if g2Config.GetSdkId(ctx) == "base" {
+		configJSON, _ := os.LookupEnv("SENZING_ENGINE_CONFIGURATION_JSON")
+		err = g2engine.Init(ctx, "load", configJSON, 0)
+		if err != nil {
+			failOnError(err, "Could not Init G2")
+		}
+		defer g2engine.Destroy(ctx)
+	}
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
+	fmt.Println("reading:", urlString)
 	<-managedconsumer.StartManagedConsumer(ctx, urlString, 3, g2engine, false)
 
 }
