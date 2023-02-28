@@ -3,12 +3,13 @@
 # -----------------------------------------------------------------------------
 
 ARG IMAGE_GO_BUILDER=golang:1.20.0
-ARG IMAGE_FINAL=senzing/senzingapi-runtime:3.4.0
+ARG IMAGE_FINAL=senzing/senzingapi-runtime:3.4.2
 
 # -----------------------------------------------------------------------------
 # Stage: go_builder
 # -----------------------------------------------------------------------------
 
+FROM ${IMAGE_FINAL} as senzing-runtime
 FROM ${IMAGE_GO_BUILDER} as go_builder
 ENV REFRESHED_AT 2023-02-28
 LABEL Name="roncewind/load" \
@@ -26,6 +27,15 @@ ARG GO_PACKAGE_NAME="github.com/roncewind/load"
 
 # COPY ./rootfs /
 COPY . ${GOPATH}/src/${GO_PACKAGE_NAME}
+
+# Copy remote files from DockerHub to build
+
+COPY --from=senzing-runtime  "/opt/senzing/g2/lib/"   "/opt/senzing/g2/lib/"
+COPY --from=senzing-runtime  "/opt/senzing/g2/sdk/c/" "/opt/senzing/g2/sdk/c/"
+
+# Set path to Senzing libs.
+
+ENV LD_LIBRARY_PATH=/opt/senzing/g2/lib/
 
 # Build go program.
 
