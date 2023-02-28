@@ -4,17 +4,12 @@ go 1.18
 
 require (
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
-	github.com/roncewind/move v0.0.0-20221230201057-6955f4897d74
+	github.com/roncewind/move v0.0.1
 	github.com/senzing/g2-sdk-go v0.4.1
 	github.com/senzing/go-helpers v0.1.0
 	github.com/senzing/go-logging v1.1.3
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
-)
-
-replace (
-	github.com/roncewind/go-util => ../go-util
-	github.com/roncewind/move => ../move
 )
 
 require (
