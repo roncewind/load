@@ -6,7 +6,6 @@ import (
 
 	"github.com/roncewind/load/input/rabbitmq"
 	"github.com/senzing/go-logging/messagelogger"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -63,16 +62,16 @@ func parseURL(urlString string) *url.URL {
 }
 
 // ----------------------------------------------------------------------------
-func Read() bool {
-	if viper.IsSet("logLevel") {
-		msglog.SetLogLevelFromString(viper.GetString("logLevel"))
+func Read(inputURL, logLevel string) bool {
+	if len(logLevel) > 0 {
+		msglog.SetLogLevelFromString(logLevel)
 	}
 
-	u := parseURL(viper.GetString("inputURL"))
+	u := parseURL(inputURL)
 	switch u.Scheme {
 	case "amqp":
-		if viper.IsSet("inputURL") {
-			rabbitmq.Read(viper.GetString("inputURL"))
+		if len(inputURL) > 0 {
+			rabbitmq.Read(inputURL)
 		} else {
 			return false
 		}

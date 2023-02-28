@@ -5,12 +5,23 @@ package cmd
 
 import (
 	"os"
+	"strings"
 
 	"github.com/roncewind/load/input"
 	"github.com/senzing/go-logging/logger"
 	"github.com/senzing/go-logging/messagelogger"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+)
+
+const (
+	envVarPrefix           string = "SENZING_TOOLS"
+	envVarReplacerCharNew  string = "_"
+	envVarReplacerCharOld  string = "-"
+	inputFileTypeParameter string = "input-file-type"
+	inputURLParameter      string = "input-url"
+	logLevelParameter      string = "log-level"
+	withInfoParameter      string = "with-info"
 )
 
 var (
@@ -46,7 +57,7 @@ var RootCmd = &cobra.Command{
 
 	For example:
 
-load --inputURL "amqp://guest:guest@192.168.6.128:5672
+load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq-exchange&queue-name=senzing-rabbitmq-queue&routing-key=senzing.records"
 `,
 
 	Run: func(cmd *cobra.Command, args []string) {
@@ -56,7 +67,7 @@ load --inputURL "amqp://guest:guest@192.168.6.128:5672
 				msglog.Log(2, key, viper.Get(key), logger.LevelInfo)
 			}
 		}
-		if !input.Read() {
+		if !input.Read(viper.GetString(inputURL), viper.GetString(logLevelParameter)) {
 			cmd.Help()
 		}
 
@@ -81,14 +92,14 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
 
 	// local flags for load
-	RootCmd.Flags().StringVarP(&fileType, "fileType", "", "", "file type override")
-	viper.BindPFlag("fileType", RootCmd.Flags().Lookup("fileType"))
-	RootCmd.Flags().StringVarP(&inputURL, "inputURL", "i", "", "input location")
-	viper.BindPFlag("inputURL", RootCmd.Flags().Lookup("inputURL"))
-	RootCmd.Flags().StringVarP(&logLevel, "logLevel", "", "", "set the logging level, default Error")
-	viper.BindPFlag("logLevel", RootCmd.Flags().Lookup("logLevel"))
-	RootCmd.Flags().BoolP("withInfo", "", false, "set to add record withInfo")
-	viper.BindPFlag("withInfo", RootCmd.Flags().Lookup("withInfo"))
+	RootCmd.Flags().StringVarP(&fileType, inputFileTypeParameter, "", "", "file type override")
+	viper.BindPFlag(inputFileTypeParameter, RootCmd.Flags().Lookup(inputFileTypeParameter))
+	RootCmd.Flags().StringVarP(&inputURL, inputURLParameter, "i", "", "input location")
+	viper.BindPFlag(inputURLParameter, RootCmd.Flags().Lookup(inputURLParameter))
+	RootCmd.Flags().StringVarP(&logLevel, logLevelParameter, "", "", "set the logging level, default Error")
+	viper.BindPFlag(logLevelParameter, RootCmd.Flags().Lookup(logLevelParameter))
+	RootCmd.Flags().BoolP(withInfoParameter, "", false, "set to add record withInfo")
+	viper.BindPFlag(withInfoParameter, RootCmd.Flags().Lookup(withInfoParameter))
 }
 
 // ----------------------------------------------------------------------------
@@ -124,38 +135,40 @@ func initConfig() {
 	}
 	viper.AutomaticEnv() // read in environment variables that match
 	// all env vars should be prefixed with "SENZING_TOOLS_"
-	viper.SetEnvPrefix("senzing_tools")
-	viper.BindEnv("fileType")
-	viper.BindEnv("inputURL")
-	viper.BindEnv("logLevel")
-	viper.BindEnv("withInfo")
+	replacer := strings.NewReplacer(envVarReplacerCharOld, envVarReplacerCharNew)
+	viper.SetEnvKeyReplacer(replacer)
+	viper.SetEnvPrefix(envVarPrefix)
+	viper.BindEnv(inputFileTypeParameter)
+	viper.BindEnv(inputURLParameter)
+	viper.BindEnv(logLevelParameter)
+	viper.BindEnv(withInfoParameter)
 
 	// cmdline args should get set in viper, but for some reason that's
 	// not happening when called from senzing-tools, this is the work around:
 	if len(fileType) > 0 {
-		viper.Set("fileType", fileType)
+		viper.Set(inputFileTypeParameter, fileType)
 	}
 	if len(inputURL) > 0 {
-		viper.Set("inputURL", inputURL)
+		viper.Set(inputURLParameter, inputURL)
 	}
 	if len(logLevel) > 0 {
-		viper.Set("logLevel", logLevel)
+		viper.Set(logLevelParameter, logLevel)
 	}
 	if withInfo {
-		viper.Set("withInfo", withInfo)
+		viper.Set(withInfoParameter, withInfo)
 	}
 
-	viper.SetDefault("logLevel", "info")
-	viper.SetDefault("withInfo", false)
+	viper.SetDefault(logLevelParameter, "info")
+	viper.SetDefault(withInfoParameter, false)
 
 	// setup local variables, in case they came from a config file
 	//TODO:  why do I have to do this?  env vars and cmdline params get mapped
 	//  automatically, this is only IF the var is in the config file.
 	//  am i missing a way to bind config file vars to local vars?
-	fileType = viper.GetString("fileType")
-	inputURL = viper.GetString("inputURL")
-	logLevel = viper.GetString("logLevel")
-	withInfo = viper.GetBool("withInfo")
+	fileType = viper.GetString(inputFileTypeParameter)
+	inputURL = viper.GetString(inputURLParameter)
+	logLevel = viper.GetString(logLevelParameter)
+	withInfo = viper.GetBool(withInfoParameter)
 
 	msglog.SetLogLevelFromString(logLevel)
 }
