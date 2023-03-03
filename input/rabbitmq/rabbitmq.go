@@ -113,8 +113,8 @@ func logStats() {
 	// fmt.Println("CPU fraction used by GC:", memStats.GCCPUFraction)
 
 	fmt.Println("---------------------------------------------------------------")
-	printCSV(">>>", "Time", "CPUs", "Go routines", "CGO calls", "Num GC", "GCSys", "GC pause total", "LastGC", "HeapAlloc", "NextGC", "CPU fraction used by GC")
-	printCSV(">>>", time.Now(), cpus, goRoutines, cgoCalls, memStats.NumGC, memStats.GCSys, gcStats.PauseTotal, gcStats.LastGC, memStats.HeapAlloc, memStats.NextGC, memStats.GCCPUFraction)
+	printCSV(">>>", "Time", "CPUs", "Go routines", "CGO calls", "Num GC", "GC pause total", "LastGC", "TotalAlloc", "HeapAlloc", "NextGC", "GCSys", "HeapSys", "StackSys", "Sys - total OS bytes", "CPU fraction used by GC")
+	printCSV(">>>", time.Now(), cpus, goRoutines, cgoCalls, memStats.NumGC, gcStats.PauseTotal, gcStats.LastGC, memStats.TotalAlloc, memStats.HeapAlloc, memStats.NextGC, memStats.GCSys, memStats.HeapSys, memStats.StackSys, memStats.Sys, memStats.GCCPUFraction)
 }
 
 // ----------------------------------------------------------------------------
