@@ -159,8 +159,8 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.6.1 h1:/FiVV8dS/e+YqF2JvO3yXRFbBLTIuSDkuC7aBOAvL+k=
 github.com/roncewind/go-util v0.0.4 h1:F/w16ZmBshuWkDOp3YsK+Y701IZokW0L/VQ1ubKaHjQ=
 github.com/roncewind/go-util v0.0.4/go.mod h1:vHqE/RBGLs+4IU9FnGdYDaF492BO8Zc0crqTiXvIp0E=
-github.com/roncewind/move v0.0.7 h1:zKHwykModGHilw9rPwg1zrF0qwj7DYNBVbYv86bkGWM=
-github.com/roncewind/move v0.0.7/go.mod h1:B9CpcocVfFI/O3FfEsKdcw5iOKl32uQbRuVh7MMR/YQ=
+github.com/roncewind/move v0.0.8 h1:JPZesiSz2O8iV0JpQ+okDI8anQjl+YIur4DZZ1EYwtE=
+github.com/roncewind/move v0.0.8/go.mod h1:B9CpcocVfFI/O3FfEsKdcw5iOKl32uQbRuVh7MMR/YQ=
 github.com/roncewind/szrecord v0.0.7 h1:r9OhNlygGpjOq1fGYkE3x1bbaaDohBTGiOtzg6G68ko=
 github.com/roncewind/szrecord v0.0.7/go.mod h1:uZjICMl1bbjDXr1dBGE4GU2frsyGrsBXgTsk47sX7Rs=
 github.com/roncewind/workerpool v0.0.4 h1:k7v3ObH4HArlj9QwU6qgCZeWKYzj08AzNBGq5Col2GU=
