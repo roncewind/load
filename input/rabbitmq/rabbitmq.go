@@ -60,7 +60,7 @@ func Read(urlString string) {
 	}()
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
-	<-managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
+	<-managedconsumer.StartManagedConsumer(ctx, urlString, 0, &g2engine, false)
 
 }
 
