@@ -161,6 +161,8 @@ github.com/roncewind/go-util v0.0.4 h1:F/w16ZmBshuWkDOp3YsK+Y701IZokW0L/VQ1ubKaH
 github.com/roncewind/go-util v0.0.4/go.mod h1:vHqE/RBGLs+4IU9FnGdYDaF492BO8Zc0crqTiXvIp0E=
 github.com/roncewind/move v0.0.10 h1:RHiSQKALPtJlNT5AEEgtE4G4Z+ANgAdY8L8TirebNCI=
 github.com/roncewind/move v0.0.10/go.mod h1:B9CpcocVfFI/O3FfEsKdcw5iOKl32uQbRuVh7MMR/YQ=
+github.com/roncewind/move v0.0.11 h1:oZW0d2pmaMr7nIj/JOVDAcW+D0H4nl88O1oCxx0ssH8=
+github.com/roncewind/move v0.0.11/go.mod h1:B9CpcocVfFI/O3FfEsKdcw5iOKl32uQbRuVh7MMR/YQ=
 github.com/roncewind/szrecord v0.0.7 h1:r9OhNlygGpjOq1fGYkE3x1bbaaDohBTGiOtzg6G68ko=
 github.com/roncewind/szrecord v0.0.7/go.mod h1:uZjICMl1bbjDXr1dBGE4GU2frsyGrsBXgTsk47sX7Rs=
 github.com/roncewind/workerpool v0.0.4 h1:k7v3ObH4HArlj9QwU6qgCZeWKYzj08AzNBGq5Col2GU=

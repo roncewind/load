@@ -19,7 +19,10 @@ const MessageIdFormat = "senzing-6201%04d"
 
 // ----------------------------------------------------------------------------
 // TODO: rename?
-func Read(urlString string) {
+func Read(urlString string, delay time.Duration) {
+
+	fmt.Println(time.Now(), "Sleep for 60 seconds to let RabbitMQ and Postgres settle down and come up.")
+	time.Sleep(delay * time.Minute)
 
 	ctx := context.Background()
 
@@ -46,6 +49,7 @@ func Read(urlString string) {
 
 	logBuildInfo()
 	logStats()
+
 	ticker := time.NewTicker(1 * time.Minute)
 	go func() {
 		for {

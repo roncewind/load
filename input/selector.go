@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/url"
+	"time"
 
 	"github.com/roncewind/load/input/rabbitmq"
 	"github.com/senzing/go-logging/messagelogger"
@@ -68,7 +69,7 @@ func parseURL(urlString string) *url.URL {
 }
 
 // ----------------------------------------------------------------------------
-func Read(inputURL, logLevel string) bool {
+func Read(inputURL, logLevel string, delay time.Duration) bool {
 	if len(logLevel) > 0 {
 		msglog.SetLogLevelFromString(logLevel)
 	}
@@ -77,7 +78,7 @@ func Read(inputURL, logLevel string) bool {
 	switch u.Scheme {
 	case "amqp":
 		if len(inputURL) > 0 {
-			rabbitmq.Read(inputURL)
+			rabbitmq.Read(inputURL, delay)
 		} else {
 			return false
 		}
