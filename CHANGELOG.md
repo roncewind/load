@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - updated to new move version
+- added processing delay parameter
 
 ## [v0.0.0] - 2023-02-24
 

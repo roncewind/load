@@ -28,6 +28,12 @@ const (
 )
 
 var (
+	buildIteration string = "0"
+	buildVersion   string = "0.0.0"
+	programName    string = "load"
+)
+
+var (
 	cfgFile    string
 	delay      int    = 0
 	exchange   string = "senzing"
@@ -72,7 +78,9 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 				fmt.Println(key, ":", viper.Get(key))
 			}
 		}
-		if !input.Read(inputURL, logLevel, time.Duration(delay)) {
+		fmt.Println(time.Now(), "Sleep for 60 seconds to let RabbitMQ and Postgres settle down and come up.")
+		time.Sleep(time.Duration(delay) * time.Second)
+		if !input.Read(inputURL, logLevel) {
 			cmd.Help()
 		}
 
@@ -174,7 +182,7 @@ func initConfig() {
 	}
 
 	viper.SetDefault(delayInSeconds, 0)
-	viper.SetDefault(logLevelParameter, "info")
+	viper.SetDefault(logLevelParameter, "error")
 	viper.SetDefault(withInfoParameter, false)
 
 	// setup local variables, in case they came from a config file

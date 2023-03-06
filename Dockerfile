@@ -73,6 +73,10 @@ COPY --from=go_builder "/output/linux/load" "/app/load"
 
 ENV LD_LIBRARY_PATH=/opt/senzing/g2/lib/
 
+RUN apt-get update  \
+ && apt-get install -y \
+      procps \
+&& rm -rf /var/lib/apt/lists/*
 # Runtime execution.
 
 WORKDIR /app
