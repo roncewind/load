@@ -69,7 +69,13 @@ var RootCmd = &cobra.Command{
 
 load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq-exchange&queue-name=senzing-rabbitmq-queue&routing-key=senzing.records"
 `,
-
+	PreRun: func(cmd *cobra.Command, args []string) {
+		viper.BindPFlag(delayInSeconds, cmd.Flags().Lookup(delayInSeconds))
+		viper.BindPFlag(inputFileTypeParameter, cmd.Flags().Lookup(inputFileTypeParameter))
+		viper.BindPFlag(inputURLParameter, cmd.Flags().Lookup(inputURLParameter))
+		viper.BindPFlag(logLevelParameter, cmd.Flags().Lookup(logLevelParameter))
+		viper.BindPFlag(withInfoParameter, cmd.Flags().Lookup(withInfoParameter))
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if msglog.IsInfo() {
 			msglog.Log(1, logger.LevelInfo)
@@ -105,20 +111,11 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.senzing/config.yaml)")
 
 	// local flags for load
-	RootCmd.Flags().IntVarP(&delay, delayInSeconds, "", 0, "time to wait before start of processing")
-	viper.BindPFlag(delayInSeconds, RootCmd.Flags().Lookup(delayInSeconds))
-
-	RootCmd.Flags().StringVarP(&fileType, inputFileTypeParameter, "", "", "file type override")
-	viper.BindPFlag(inputFileTypeParameter, RootCmd.Flags().Lookup(inputFileTypeParameter))
-
+	RootCmd.Flags().IntVar(&delay, delayInSeconds, 0, "time to wait before start of processing")
+	RootCmd.Flags().StringVar(&fileType, inputFileTypeParameter, "", "file type override")
 	RootCmd.Flags().StringVarP(&inputURL, inputURLParameter, "i", "", "input location")
-	viper.BindPFlag(inputURLParameter, RootCmd.Flags().Lookup(inputURLParameter))
-
-	RootCmd.Flags().StringVarP(&logLevel, logLevelParameter, "", "", "set the logging level, default Error")
-	viper.BindPFlag(logLevelParameter, RootCmd.Flags().Lookup(logLevelParameter))
-
-	RootCmd.Flags().BoolP(withInfoParameter, "", false, "set to add record withInfo")
-	viper.BindPFlag(withInfoParameter, RootCmd.Flags().Lookup(withInfoParameter))
+	RootCmd.Flags().StringVar(&logLevel, logLevelParameter, "", "set the logging level, default Error")
+	RootCmd.Flags().Bool(withInfoParameter, false, "set to add record withInfo")
 }
 
 // ----------------------------------------------------------------------------
@@ -162,24 +159,6 @@ func initConfig() {
 	viper.BindEnv(inputURLParameter)
 	viper.BindEnv(logLevelParameter)
 	viper.BindEnv(withInfoParameter)
-
-	// cmdline args should get set in viper, but for some reason that's
-	// not happening when called from senzing-tools, this is the work around:
-	if delay > 0 {
-		viper.Set(delayInSeconds, delay)
-	}
-	if len(fileType) > 0 {
-		viper.Set(inputFileTypeParameter, fileType)
-	}
-	if len(inputURL) > 0 {
-		viper.Set(inputURLParameter, inputURL)
-	}
-	if len(logLevel) > 0 {
-		viper.Set(logLevelParameter, logLevel)
-	}
-	if withInfo {
-		viper.Set(withInfoParameter, withInfo)
-	}
 
 	viper.SetDefault(delayInSeconds, 0)
 	viper.SetDefault(logLevelParameter, "error")
