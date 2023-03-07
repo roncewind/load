@@ -78,7 +78,7 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 				fmt.Println(key, ":", viper.Get(key))
 			}
 		}
-		fmt.Println(time.Now(), "Sleep for 60 seconds to let RabbitMQ and Postgres settle down and come up.")
+		fmt.Println(time.Now(), "Sleep for ", delay, " seconds to let RabbitMQ and Postgres settle down and come up.")
 		time.Sleep(time.Duration(delay) * time.Second)
 		if !input.Read(inputURL, logLevel) {
 			cmd.Help()
