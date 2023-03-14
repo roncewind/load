@@ -199,6 +199,8 @@ github.com/roncewind/move v0.0.12-0.20230309215014-583815fd342f h1:z7Xvkz2r8aSWT
 github.com/roncewind/move v0.0.12-0.20230309215014-583815fd342f/go.mod h1:B9CpcocVfFI/O3FfEsKdcw5iOKl32uQbRuVh7MMR/YQ=
 github.com/roncewind/move v0.0.12-0.20230314175825-33be5ead4baf h1:Qn1WzSpKsu+fHDWOzrRni/zl20FGsUkokse8Qfs1sq8=
 github.com/roncewind/move v0.0.12-0.20230314175825-33be5ead4baf/go.mod h1:B9CpcocVfFI/O3FfEsKdcw5iOKl32uQbRuVh7MMR/YQ=
+github.com/roncewind/move v0.0.12-0.20230314182045-9e89295c1feb h1:cPTvK2P+s6C5HjTZhRsHZJEXU8Gk8zaGF6Rnk4piYRc=
+github.com/roncewind/move v0.0.12-0.20230314182045-9e89295c1feb/go.mod h1:nYyfIQ3J8DkGbb/OTijKPV8pwvGiBU10u28MjmkaADw=
 github.com/roncewind/szrecord v0.0.7 h1:r9OhNlygGpjOq1fGYkE3x1bbaaDohBTGiOtzg6G68ko=
 github.com/roncewind/szrecord v0.0.7/go.mod h1:uZjICMl1bbjDXr1dBGE4GU2frsyGrsBXgTsk47sX7Rs=
 github.com/roncewind/workerpool v0.0.4 h1:k7v3ObH4HArlj9QwU6qgCZeWKYzj08AzNBGq5Col2GU=
@@ -213,6 +215,8 @@ github.com/senzing/g2-sdk-go-grpc v0.2.0/go.mod h1:/ALGHzcUDhGJXYo0xgzd2ZkGk5goQ
 github.com/senzing/g2-sdk-proto/go v0.0.0-20230126140313-273e96bc7dbd h1:FWU5eJlkfWAPkzha9YlJiJ+Xqurs5uQtfW/iYB0TsJA=
 github.com/senzing/g2-sdk-proto/go v0.0.0-20230126140313-273e96bc7dbd/go.mod h1:MJDH/VHktx3vOOmFLKmi84HZuv3kcgiO544XzcqhVV4=
 github.com/senzing/go-common v0.1.1 h1:JRKS3ZfChXa1XjesBIHYxTeISwcu0ksFMULaVQfZ+LA=
+github.com/senzing/go-common v0.1.2 h1:d4E4cyKAqBvHvexLvj51WwoU78jTbLlBXmE67o41CM8=
+github.com/senzing/go-common v0.1.2/go.mod h1:rDosNB5AHPIQvtwxvKvWKlF+dkzI+2WjeOfPWE7Bh2I=
 github.com/senzing/go-logging v1.1.3 h1:eTWuEgI+4bwyS0gSpYKNbz8gL8ATAqByA3q1sbRJCu4=
 github.com/senzing/go-logging v1.1.3/go.mod h1:FarStyY/kYd7+ymtawOXvOk48j/6fHRZ8unSwpi4FzI=
 github.com/senzing/go-observing v0.1.1 h1:nTvzLS+LOEcW+YWXvGeGn5Zayhg6h3SVCC37xF4vHEg=

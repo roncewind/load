@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
-	github.com/roncewind/move v0.0.12-0.20230314175825-33be5ead4baf
+	github.com/roncewind/move v0.0.12-0.20230314182045-9e89295c1feb
 	github.com/senzing/go-logging v1.1.3
 	github.com/senzing/go-sdk-abstract-factory v0.2.0
 	github.com/spf13/cobra v1.6.1
@@ -27,6 +27,7 @@ require (
 	github.com/senzing/g2-sdk-go-base v0.1.0 // indirect
 	github.com/senzing/g2-sdk-go-grpc v0.2.0 // indirect
 	github.com/senzing/g2-sdk-proto/go v0.0.0-20230126140313-273e96bc7dbd // indirect
+	github.com/senzing/go-common v0.1.2 // indirect
 	github.com/senzing/go-observing v0.1.1 // indirect
 	github.com/spf13/afero v1.9.4 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
