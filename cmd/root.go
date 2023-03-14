@@ -4,12 +4,13 @@ Copyright © 2022 roncewind <dad@lynntribe.net>
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/roncewind/load/input"
+	"github.com/roncewind/load/loader"
 	"github.com/senzing/go-logging/logger"
 	"github.com/senzing/go-logging/messagelogger"
 	"github.com/spf13/cobra"
@@ -86,7 +87,15 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 		}
 		fmt.Println(time.Now(), "Sleep for ", delay, " seconds to let RabbitMQ and Postgres settle down and come up.")
 		time.Sleep(time.Duration(delay) * time.Second)
-		if !input.Read(inputURL, logLevel) {
+
+		ctx := context.Background()
+
+		loader := &loader.LoaderImpl{
+			InputURL: inputURL,
+			LogLevel: logLevel,
+		}
+
+		if !loader.Load(ctx) {
 			cmd.Help()
 		}
 

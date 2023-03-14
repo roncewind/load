@@ -1,6 +1,7 @@
 package input
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"net/url"
@@ -68,7 +69,7 @@ func parseURL(urlString string) *url.URL {
 }
 
 // ----------------------------------------------------------------------------
-func Read(inputURL, logLevel string) bool {
+func Read(ctx context.Context, inputURL, logLevel string) bool {
 	if len(logLevel) > 0 {
 		msglog.SetLogLevelFromString(logLevel)
 	}
@@ -77,7 +78,7 @@ func Read(inputURL, logLevel string) bool {
 	switch u.Scheme {
 	case "amqp":
 		if len(inputURL) > 0 {
-			rabbitmq.Read(inputURL)
+			rabbitmq.Read(ctx, inputURL)
 		} else {
 			return false
 		}
