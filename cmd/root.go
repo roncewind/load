@@ -19,6 +19,7 @@ import (
 
 const (
 	delayInSeconds         string = "delay-in-seconds"
+	engineConfigParameter  string = "engine-configuration-json"
 	envVarPrefix           string = "SENZING_TOOLS"
 	envVarReplacerCharNew  string = "_"
 	envVarReplacerCharOld  string = "-"
@@ -35,15 +36,16 @@ var (
 )
 
 var (
-	cfgFile    string
-	delay      int    = 0
-	exchange   string = "senzing"
-	fileType   string //TODO: load from file
-	inputQueue string = "senzing_input"
-	inputURL   string // read from this URL, could be a file or a queue
-	logLevel   string = "info"
-	msglog     messagelogger.MessageLoggerInterface
-	withInfo   bool = false
+	cfgFile          string
+	delay            int = 0
+	engineConfigJson string
+	exchange         string = "senzing"
+	fileType         string //TODO: load from file
+	inputQueue       string = "senzing_input"
+	inputURL         string // read from this URL, could be a file or a queue
+	logLevel         string = "info"
+	msglog           messagelogger.MessageLoggerInterface
+	withInfo         bool = false
 )
 
 // load is 6201:  https://github.com/Senzing/knowledge-base/blob/main/lists/senzing-product-ids.md
@@ -72,6 +74,7 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 `,
 	PreRun: func(cmd *cobra.Command, args []string) {
 		viper.BindPFlag(delayInSeconds, cmd.Flags().Lookup(delayInSeconds))
+		viper.BindPFlag(engineConfigParameter, cmd.Flags().Lookup(engineConfigParameter))
 		viper.BindPFlag(inputFileTypeParameter, cmd.Flags().Lookup(inputFileTypeParameter))
 		viper.BindPFlag(inputURLParameter, cmd.Flags().Lookup(inputURLParameter))
 		viper.BindPFlag(logLevelParameter, cmd.Flags().Lookup(logLevelParameter))
@@ -91,8 +94,9 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 		ctx := context.Background()
 
 		loader := &loader.LoaderImpl{
-			InputURL: inputURL,
-			LogLevel: logLevel,
+			InputURL:         inputURL,
+			LogLevel:         logLevel,
+			EngineConfigJson: engineConfigJson,
 		}
 
 		if !loader.Load(ctx) {
@@ -121,6 +125,7 @@ func init() {
 
 	// local flags for load
 	RootCmd.Flags().IntVar(&delay, delayInSeconds, 0, "time to wait before start of processing")
+	RootCmd.Flags().StringVar(&engineConfigJson, engineConfigParameter, "", "Senzing engine configuration JSON")
 	RootCmd.Flags().StringVar(&fileType, inputFileTypeParameter, "", "file type override")
 	RootCmd.Flags().StringVarP(&inputURL, inputURLParameter, "i", "", "input location")
 	RootCmd.Flags().StringVar(&logLevel, logLevelParameter, "", "set the logging level, default Error")
@@ -164,6 +169,7 @@ func initConfig() {
 	viper.SetEnvKeyReplacer(replacer)
 	viper.SetEnvPrefix(envVarPrefix)
 	viper.BindEnv(delayInSeconds)
+	viper.BindEnv(engineConfigParameter)
 	viper.BindEnv(inputFileTypeParameter)
 	viper.BindEnv(inputURLParameter)
 	viper.BindEnv(logLevelParameter)
@@ -178,6 +184,7 @@ func initConfig() {
 	//  automatically, this is only IF the var is in the config file.
 	//  am i missing a way to bind config file vars to local vars?
 	delay = viper.GetInt(delayInSeconds)
+	engineConfigJson = viper.GetString(engineConfigParameter)
 	fileType = viper.GetString(inputFileTypeParameter)
 	inputURL = viper.GetString(inputURLParameter)
 	logLevel = viper.GetString(logLevelParameter)

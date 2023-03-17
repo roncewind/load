@@ -3,9 +3,10 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
-	"os"
+	"log"
 
 	"github.com/docktermj/go-xyzzy-helpers/logger"
+	"github.com/roncewind/go-util/util"
 	"github.com/roncewind/move/io/rabbitmq/managedconsumer"
 
 	"github.com/senzing/g2-sdk-go/g2api"
@@ -16,40 +17,48 @@ import (
 const MessageIdFormat = "senzing-6201%04d"
 
 // ----------------------------------------------------------------------------
-// TODO: rename?
-func Read(ctx context.Context, urlString string) {
+
+// read and process records from the given queue until a system interrupt
+func Read(ctx context.Context, urlString, engineConfigJson string) {
 
 	// Work with G2engine.
-	g2engine := createG2Engine(ctx)
+	g2engine := createG2Engine(ctx, engineConfigJson)
 	defer (*g2engine).Destroy(ctx)
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
-	<-managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
-
+	consumerChan, startErr := managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
+	if startErr != nil {
+		msg := "there was an unexpected issue; please report this as a bug."
+		if _, ok := startErr.(managedconsumer.ManagedConsumerError); ok {
+			msg = startErr.Error()
+		}
+		handleError(1, startErr, msg)
+	}
+	<-util.OrDone(ctx, consumerChan)
+	fmt.Println("So long and thanks for all the fish.")
 }
 
 // ----------------------------------------------------------------------------
 
 // create a G2Engine object, on error this function panics.
 // see failOnError
-func createG2Engine(ctx context.Context) *g2api.G2engine {
+func createG2Engine(ctx context.Context, engineConfigJson string) *g2api.G2engine {
 	senzingFactory := &factory.SdkAbstractFactoryImpl{}
 	g2Config, err := senzingFactory.GetG2config(ctx)
 	if err != nil {
-		failOnError(err, "Unable to retrieve the config")
+		handleError(2, err, "Unable to retrieve the config")
 	}
 	g2engine, err := senzingFactory.GetG2engine(ctx)
 
 	if err != nil {
 		logger.LogMessage(MessageIdFormat, 2000, err.Error())
-		failOnError(err, "Unable to reach G2")
+		handleError(3, err, "Unable to reach G2")
 	}
 	if g2Config.GetSdkId(ctx) == "base" {
-		configJSON, _ := os.LookupEnv("SENZING_ENGINE_CONFIGURATION_JSON")
-		err = g2engine.Init(ctx, "load", configJSON, 0)
+		err = g2engine.Init(ctx, "load", engineConfigJson, 0)
 		if err != nil {
-			failOnError(err, "Could not Init G2")
+			handleError(4, err, "Could not Init G2")
 		}
 	}
 	return &g2engine
@@ -58,9 +67,9 @@ func createG2Engine(ctx context.Context) *g2api.G2engine {
 // ----------------------------------------------------------------------------
 
 // TODO: update error handling
-func failOnError(err error, msg string) {
-	if err != nil {
-		s := fmt.Sprintf("%s: %s", msg, err)
-		panic(s)
-	}
+func handleError(key int, err error, msg string) {
+	log.SetPrefix(fmt.Sprintf("[logID:%v]", key))
+	log.Printf("%#v\n", err)
+	fmt.Printf("[%v] %v", key, msg)
+	panic(err)
 }
