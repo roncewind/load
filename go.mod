@@ -21,7 +21,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/rabbitmq/amqp091-go v1.7.0 // indirect
-	github.com/roncewind/go-util v0.0.5-0.20230316144114-e9c592375058 // indirect
+	github.com/roncewind/go-util v0.0.5-0.20230317164152-38d746fe0064 // indirect
 	github.com/roncewind/workerpool v0.0.4 // indirect
 	github.com/senzing/g2-sdk-go-base v0.1.0 // indirect
 	github.com/senzing/g2-sdk-go-grpc v0.2.0 // indirect
