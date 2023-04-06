@@ -159,12 +159,8 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZVejAe8=
 github.com/roncewind/go-util v0.0.5-0.20230317170301-6af943422905 h1:EfhzfBziC86InbUqhMdlHb6WKu6kX+3qws+S57jRBws=
 github.com/roncewind/go-util v0.0.5-0.20230317170301-6af943422905/go.mod h1:OZtg+ktUcuHKh2yIT1gFYDIPooxGGaRTPRiyunU4LeU=
-github.com/roncewind/move v0.0.12-0.20230406201020-4624c9e84dcb h1:rso67QXeTLFgcxwuQxp+KvCjet9tWpCemeTeGcxD1Ig=
-github.com/roncewind/move v0.0.12-0.20230406201020-4624c9e84dcb/go.mod h1:bb8k6KEf0q2xIvuEo6+lB6zLGn+GdEKUVHWT6BBHydA=
 github.com/roncewind/move v0.0.12-0.20230406202222-703f23691fa6 h1:utxiLJ5lRdiCPh8ELLhMpeqvPnOuLyzgdTcPrAOloA0=
 github.com/roncewind/move v0.0.12-0.20230406202222-703f23691fa6/go.mod h1:bb8k6KEf0q2xIvuEo6+lB6zLGn+GdEKUVHWT6BBHydA=
-github.com/roncewind/workerpool v0.0.4 h1:k7v3ObH4HArlj9QwU6qgCZeWKYzj08AzNBGq5Col2GU=
-github.com/roncewind/workerpool v0.0.4/go.mod h1:cUHV/wngIowKcK+CXx5O2iqUO/jXt1qhnYGtQJMO0H0=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/senzing/g2-sdk-go v0.5.0 h1:rCHKr53i0mM/Vi3C6KjefDOqCTleFDIBviNWgZTsMbo=
 github.com/senzing/g2-sdk-go v0.5.0/go.mod h1:SpYcLeU8slSpl76FDivuc8C7mD7Hw2uUkTgb6ANovlY=
@@ -182,8 +178,6 @@ github.com/senzing/go-observing v0.2.0 h1:QTFFTaZJ/1S2u96N17w2aCh/AHGHSOZCwX+VNU
 github.com/senzing/go-observing v0.2.0/go.mod h1:M5zrUXIYC4dL1fevBezB+aXIaU6uut/wynlQ93OcZhg=
 github.com/senzing/go-sdk-abstract-factory v0.2.1 h1:1tw+10JT/shCzF2oyzWdtye87hl231VXtwmWfWGhOdU=
 github.com/senzing/go-sdk-abstract-factory v0.2.1/go.mod h1:Vbdfk6hQOA9SJmMAZxPyfOsPvA3Q5f1osXpKg8lu1YA=
-github.com/senzing/senzing-tools v0.1.6-0.20230324173627-5821b863c014 h1:7E66bkDWo6DNffnKTirwMCfnlJzic4Q0SDQIhl9ib1Q=
-github.com/senzing/senzing-tools v0.1.6-0.20230324173627-5821b863c014/go.mod h1:UXnBF3P5sB3Q5Sx3PlZuG2qZB336Rvb+9gysIa0LsEU=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spf13/afero v1.9.5 h1:stMpOSZFs//0Lv29HduCmli3GUfpFoF3Y1Q/aXj/wVM=
