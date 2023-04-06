@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"github.com/docktermj/go-xyzzy-helpers/logger"
-	"github.com/roncewind/go-util/util"
 	"github.com/roncewind/move/io/rabbitmq/managedconsumer"
 
 	"github.com/senzing/g2-sdk-go/g2api"
@@ -27,7 +26,8 @@ func Read(ctx context.Context, urlString, engineConfigJson string) {
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
-	consumerChan, startErr := managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
+	// consumerChan, startErr := managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
+	startErr := managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
 	if startErr != nil {
 		msg := "there was an unexpected issue; please report this as a bug."
 		if _, ok := startErr.(managedconsumer.ManagedConsumerError); ok {
@@ -35,7 +35,7 @@ func Read(ctx context.Context, urlString, engineConfigJson string) {
 		}
 		handleError(1, startErr, msg)
 	}
-	<-util.OrDone(ctx, consumerChan)
+	// <-util.OrDone(ctx, consumerChan)
 	fmt.Println("So long and thanks for all the fish.")
 }
 
