@@ -26,7 +26,6 @@ func Read(ctx context.Context, urlString, engineConfigJson string) {
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
-	// consumerChan, startErr := managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
 	startErr := managedconsumer.StartManagedConsumer(ctx, urlString, 0, g2engine, false)
 	if startErr != nil {
 		msg := "there was an unexpected issue; please report this as a bug."
@@ -35,7 +34,6 @@ func Read(ctx context.Context, urlString, engineConfigJson string) {
 		}
 		handleError(1, startErr, msg)
 	}
-	// <-util.OrDone(ctx, consumerChan)
 	fmt.Println("So long and thanks for all the fish.")
 }
 

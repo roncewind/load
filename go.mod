@@ -4,8 +4,7 @@ go 1.20
 
 require (
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
-	github.com/roncewind/go-util v0.0.5-0.20230317170301-6af943422905
-	github.com/roncewind/move v0.0.12-0.20230406195900-200d6f547e92
+	github.com/roncewind/move v0.0.12-0.20230406201020-4624c9e84dcb
 	github.com/senzing/g2-sdk-go v0.5.0
 	github.com/senzing/go-logging v1.1.3
 	github.com/senzing/go-sdk-abstract-factory v0.2.1
@@ -22,13 +21,13 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/rabbitmq/amqp091-go v1.7.0 // indirect
+	github.com/roncewind/go-util v0.0.5-0.20230317170301-6af943422905 // indirect
 	github.com/roncewind/workerpool v0.0.4 // indirect
 	github.com/senzing/g2-sdk-go-base v0.1.3 // indirect
 	github.com/senzing/g2-sdk-go-grpc v0.2.1 // indirect
 	github.com/senzing/g2-sdk-proto/go v0.0.0-20230315125947-e4aea8f381eb // indirect
 	github.com/senzing/go-common v0.1.2 // indirect
 	github.com/senzing/go-observing v0.2.0 // indirect
-	github.com/senzing/senzing-tools v0.1.6-0.20230324173627-5821b863c014 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
