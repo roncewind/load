@@ -28,7 +28,6 @@ require (
 	github.com/senzing/g2-sdk-proto/go v0.0.0-20230315125947-e4aea8f381eb // indirect
 	github.com/senzing/go-common v0.1.2 // indirect
 	github.com/senzing/go-observing v0.2.0 // indirect
-	github.com/senzing/senzing-tools v0.1.6-0.20230324173627-5821b863c014 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
