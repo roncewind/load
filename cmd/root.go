@@ -4,18 +4,34 @@ Copyright © 2022 roncewind <dad@lynntribe.net>
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/roncewind/load/loader"
 	"github.com/senzing/go-logging/messagelogger"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
+const (
+	defaultDelayInSeconds int    = 0
+	defaultFileType       string = ""
+	defaultInputURL       string = ""
+	defaultOutputURL      string = ""
+	defaultLogLevel       string = "error"
+	Use                   string = "load"
+	Short                 string = "Load records into Senzing."
+	Long                  string = `
+	Welcome to load!
+	This tool will load records into Senzing. It validates the records conform to the Generic Entity Specification.
+
+	For example:
+
+	load --input-url "amqp://guest:guest@192.168.6.96:5672"
+	load --input-url "https://public-read-access.s3.amazonaws.com/TestDataSets/SenzingTruthSet/truth-set-3.0.0.jsonl"
+`
+)
 const (
 	delayInSeconds         string = "delay-in-seconds"
 	engineConfigParameter  string = "engine-configuration-json"
@@ -35,16 +51,16 @@ var (
 )
 
 var (
-	cfgFile          string
-	delay            int = 0
-	engineConfigJson string
-	exchange         string = "senzing"
-	fileType         string //TODO: load from file
-	inputQueue       string = "senzing_input"
-	inputURL         string // read from this URL, could be a file or a queue
-	logLevel         string = "info"
-	msglog           messagelogger.MessageLoggerInterface
-	withInfo         bool = false
+	cfgFile string
+	delay   int = 0
+	// engineConfigJson string
+	exchange   string = "senzing"
+	fileType   string //TODO: load from file
+	inputQueue string = "senzing_input"
+	// inputURL         string // read from this URL, could be a file or a queue
+	// logLevel         string = "info"
+	msglog   messagelogger.MessageLoggerInterface
+	withInfo bool = false
 )
 
 // load is 6201:  https://github.com/Senzing/knowledge-base/blob/main/lists/senzing-product-ids.md
@@ -63,14 +79,9 @@ var idMessages = map[int]string{
 // ----------------------------------------------------------------------------
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "load",
-	Short: "Load records into Senzing",
-	Long: `TODO: Load records from somewhere...
-
-	For example:
-
-load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq-exchange&queue-name=senzing-rabbitmq-queue&routing-key=senzing.records"
-`,
+	Use:   Use,
+	Short: Short,
+	Long:  Long,
 	PreRun: func(cmd *cobra.Command, args []string) {
 		viper.BindPFlag(delayInSeconds, cmd.Flags().Lookup(delayInSeconds))
 		viper.BindPFlag(engineConfigParameter, cmd.Flags().Lookup(engineConfigParameter))
@@ -91,17 +102,17 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 		fmt.Println(time.Now(), "Sleep for ", delay, " seconds to let queues and database settle down and come up.")
 		time.Sleep(time.Duration(delay) * time.Second)
 
-		ctx := context.Background()
+		// ctx := context.Background()
 
-		loader := &loader.LoaderImpl{
-			InputURL:         inputURL,
-			LogLevel:         logLevel,
-			EngineConfigJson: engineConfigJson,
-		}
+		// loader := &loader.LoaderImpl{
+		// 	InputURL:         viper.GetString(inputURLParameter),
+		// 	LogLevel:         viper.GetString(logLevelParameter),
+		// 	EngineConfigJson: viper.GetString(engineConfigParameter),
+		// }
 
-		if !loader.Load(ctx) {
-			cmd.Help()
-		}
+		// if !loader.Load(ctx) {
+		// 	cmd.Help()
+		// }
 
 	},
 }
@@ -184,11 +195,11 @@ func initConfig() {
 	//  automatically, this is only IF the var is in the config file.
 	//  am i missing a way to bind config file vars to local vars?
 	delay = viper.GetInt(delayInSeconds)
-	engineConfigJson = viper.GetString(engineConfigParameter)
+	// engineConfigJson = viper.GetString(engineConfigParameter)
 	fileType = viper.GetString(inputFileTypeParameter)
-	inputURL = viper.GetString(inputURLParameter)
-	logLevel = viper.GetString(logLevelParameter)
+	// inputURL = viper.GetString(inputURLParameter)
+	// logLevel = viper.GetString(logLevelParameter)
 	withInfo = viper.GetBool(withInfoParameter)
 
-	msglog.SetLogLevelFromString(logLevel)
+	msglog.SetLogLevelFromString(viper.GetString(logLevelParameter))
 }
