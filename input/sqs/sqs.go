@@ -22,8 +22,9 @@ const MessageIdFormat = "senzing-6201%04d"
 func Read(ctx context.Context, urlString, engineConfigJson string) {
 
 	// Work with G2engine.
-	g2engine := createG2Engine(ctx, engineConfigJson)
-	defer (*g2engine).Destroy(ctx)
+	// g2engine := createG2Engine(ctx, engineConfigJson)
+	// defer (*g2engine).Destroy(ctx)
+	var g2engine *g2api.G2engine = nil
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
