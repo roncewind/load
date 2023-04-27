@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/roncewind/load/loader"
-	"github.com/senzing/go-logging/logger"
 	"github.com/senzing/go-logging/messagelogger"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -81,14 +80,15 @@ load --input-url "amqp://guest:guest@192.168.6.96:5672?exchange=senzing-rabbitmq
 		viper.BindPFlag(withInfoParameter, cmd.Flags().Lookup(withInfoParameter))
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		if msglog.IsInfo() {
-			msglog.Log(1, logger.LevelInfo)
-			for _, key := range viper.AllKeys() {
-				// msglog.Log(2, key, viper.Get(key), logger.LevelInfo)
-				fmt.Println(key, ":", viper.Get(key))
-			}
+		// if msglog.IsInfo() {
+		// msglog.Log(1, logger.LevelInfo)
+		fmt.Println("Viper keys")
+		for _, key := range viper.AllKeys() {
+			// msglog.Log(2, key, viper.Get(key), logger.LevelInfo)
+			fmt.Println(key, ":", viper.Get(key))
 		}
-		fmt.Println(time.Now(), "Sleep for ", delay, " seconds to let RabbitMQ and Postgres settle down and come up.")
+		// }
+		fmt.Println(time.Now(), "Sleep for ", delay, " seconds to let queues and database settle down and come up.")
 		time.Sleep(time.Duration(delay) * time.Second)
 
 		ctx := context.Background()

@@ -34,6 +34,7 @@ var idMessages = map[int]string{
 
 // ----------------------------------------------------------------------------
 func parseURL(urlString string) *url.URL {
+	fmt.Println("Parse url:", urlString)
 	u, err := url.Parse(urlString)
 	if err != nil {
 		panic(err)
