@@ -7,6 +7,7 @@ import (
 	"net/url"
 
 	"github.com/roncewind/load/input/rabbitmq"
+	"github.com/roncewind/load/input/sqs"
 	"github.com/senzing/go-logging/messagelogger"
 )
 
@@ -83,7 +84,11 @@ func Read(ctx context.Context, inputURL, logLevel, engineConfigJson string) bool
 			return false
 		}
 	case "sqs":
-		msglog.Log(2001, u.Scheme, messagelogger.LevelWarn)
+		if len(inputURL) > 0 {
+			sqs.Read(ctx, inputURL, engineConfigJson)
+		} else {
+			return false
+		}
 	default:
 		msglog.Log(2001, u.Scheme, messagelogger.LevelWarn)
 	}
