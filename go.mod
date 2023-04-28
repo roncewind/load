@@ -8,6 +8,7 @@ require (
 	github.com/senzing/g2-sdk-go v0.6.1
 	github.com/senzing/go-logging v1.2.1
 	github.com/senzing/go-sdk-abstract-factory v0.2.2
+	github.com/senzing/senzing-tools v0.2.4-0.20230424174526-4af96a60fda8
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
 )
@@ -43,7 +44,6 @@ require (
 	github.com/senzing/go-common v0.1.2 // indirect
 	github.com/senzing/go-messaging v0.1.1 // indirect
 	github.com/senzing/go-observing v0.2.1 // indirect
-	github.com/senzing/senzing-tools v0.2.4-0.20230424174526-4af96a60fda8 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
