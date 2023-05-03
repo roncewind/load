@@ -188,8 +188,6 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjRBZyWFQ=
 github.com/roncewind/go-util v0.0.5-0.20230503202907-4b8534fde703 h1:/CM7xusK4ZUUyaxzze4nAQ+BiE7B6YxDXx+IjReMbgk=
 github.com/roncewind/go-util v0.0.5-0.20230503202907-4b8534fde703/go.mod h1:3W93f0MuKIQJA21OqGPcjzw87zc1TFFTn/O0lWB2Ahg=
-github.com/roncewind/move v0.0.12-0.20230503202942-45d613c307e3 h1:ch5lVhcWMM0/WVV9Lq6YzFj25pSpYxK8WiQrQVy73fM=
-github.com/roncewind/move v0.0.12-0.20230503202942-45d613c307e3/go.mod h1:ZYDJ3cfUBDOE38gQQO3xDNgatNgi+v7lq6O9wC+MUqc=
 github.com/roncewind/move v0.0.12-0.20230503203029-8d3d95be694a h1:1XAvjoZswieCNmSIZE33RXcCfNALhNUB0QQzyKoXxJc=
 github.com/roncewind/move v0.0.12-0.20230503203029-8d3d95be694a/go.mod h1:ZYDJ3cfUBDOE38gQQO3xDNgatNgi+v7lq6O9wC+MUqc=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
