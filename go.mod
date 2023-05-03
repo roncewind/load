@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
-	github.com/roncewind/move v0.0.12-0.20230503202942-45d613c307e3
+	github.com/roncewind/move v0.0.12-0.20230503203029-8d3d95be694a
 	github.com/senzing/g2-sdk-go v0.6.1
 	github.com/senzing/go-logging v1.2.1
 	github.com/senzing/go-sdk-abstract-factory v0.2.2
