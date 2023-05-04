@@ -90,6 +90,12 @@ func Read(ctx context.Context, inputURL, logLevel, engineConfigJson string) bool
 		} else {
 			return false
 		}
+	case "https":
+		if len(inputURL) > 0 {
+			sqs.Read(ctx, inputURL, engineConfigJson)
+		} else {
+			return false
+		}
 	default:
 		msglog.Log(2001, u.Scheme, messagelogger.LevelWarn)
 	}
