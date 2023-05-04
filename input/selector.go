@@ -85,12 +85,15 @@ func Read(ctx context.Context, inputURL, logLevel, engineConfigJson string) bool
 			return false
 		}
 	case "sqs":
+		//allows for using a dummy URL with just a queue-name
+		// eg  sqs://lookup?queue-name=myqueue
 		if len(inputURL) > 0 {
 			sqs.Read(ctx, inputURL, engineConfigJson)
 		} else {
 			return false
 		}
 	case "https":
+		//uses actual AWS SQS URL.  TODO: detect sqs/amazonaws url?
 		if len(inputURL) > 0 {
 			sqs.Read(ctx, inputURL, engineConfigJson)
 		} else {
