@@ -186,12 +186,8 @@ github.com/rabbitmq/amqp091-go v1.7.0 h1:V5CF5qPem5OGSnEo8BoSbsDGwejg6VUJsKEdnea
 github.com/rabbitmq/amqp091-go v1.7.0/go.mod h1:wfClAtY0C7bOHxd3GjmF26jEHn+rR/0B3+YV+Vn9/NI=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjRBZyWFQ=
-github.com/roncewind/go-util v0.0.5-0.20230511204750-7ee65c325caa h1:F10KWCUNkDyKCm0XLh7Cc7oZERZUrwpAbm/IUHGwG4U=
-github.com/roncewind/go-util v0.0.5-0.20230511204750-7ee65c325caa/go.mod h1:3W93f0MuKIQJA21OqGPcjzw87zc1TFFTn/O0lWB2Ahg=
 github.com/roncewind/go-util v0.0.5-0.20230511223755-a73ef67c4a9f h1:94vBpwwVayNOJMJwRoMqLC7reZRtcKolDFw7W6czGns=
 github.com/roncewind/go-util v0.0.5-0.20230511223755-a73ef67c4a9f/go.mod h1:3W93f0MuKIQJA21OqGPcjzw87zc1TFFTn/O0lWB2Ahg=
-github.com/roncewind/move v0.0.12-0.20230511204829-d75f7cc552c3 h1:dqjFMhO1YOMj/ZJj17LyZahWdfl9//AQQB4ymZ/KHs0=
-github.com/roncewind/move v0.0.12-0.20230511204829-d75f7cc552c3/go.mod h1:J53w8E+waJOyPgCXO8eUH8YOUuF1PzeaUhGv53nCq8k=
 github.com/roncewind/move v0.0.12-0.20230511223830-8999164e63b7 h1:WzgtCqfm5xcY7B9VB9O/v63uuFNlBPGjzGe6TiAIN1A=
 github.com/roncewind/move v0.0.12-0.20230511223830-8999164e63b7/go.mod h1:RkLk/2COxoNbh5C611GwjaTlGzJSwZuuCMYR7k1OKK0=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
