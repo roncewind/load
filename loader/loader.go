@@ -16,6 +16,7 @@ import (
 
 type LoaderImpl struct {
 	EngineConfigJson string
+	EngineLogLevel   int
 	InputURL         string
 	LogLevel         string
 }
@@ -44,7 +45,7 @@ func (l *LoaderImpl) Load(ctx context.Context) bool {
 		}
 	}()
 
-	return input.Read(ctx, l.InputURL, l.LogLevel, l.EngineConfigJson)
+	return input.Read(ctx, l.InputURL, l.LogLevel, l.EngineConfigJson, l.EngineLogLevel)
 }
 
 // ----------------------------------------------------------------------------

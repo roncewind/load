@@ -19,12 +19,12 @@ const MessageIdFormat = "senzing-6201%04d"
 // ----------------------------------------------------------------------------
 
 // read and process records from the given queue until a system interrupt
-func Read(ctx context.Context, urlString, engineConfigJson string) {
+func Read(ctx context.Context, urlString, engineConfigJson string, engineLogLevel int) {
 
 	// Work with G2engine.
-	// g2engine := createG2Engine(ctx, engineConfigJson)
-	// defer (*g2engine).Destroy(ctx)
-	var g2engine *g2api.G2engine = nil
+	g2engine := createG2Engine(ctx, engineConfigJson, engineLogLevel)
+	defer (*g2engine).Destroy(ctx)
+	// var g2engine *g2api.G2engine = nil
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
@@ -43,7 +43,7 @@ func Read(ctx context.Context, urlString, engineConfigJson string) {
 
 // create a G2Engine object, on error this function panics.
 // see failOnError
-func createG2Engine(ctx context.Context, engineConfigJson string) *g2api.G2engine {
+func createG2Engine(ctx context.Context, engineConfigJson string, engineLogLevel int) *g2api.G2engine {
 	senzingFactory := &factory.SdkAbstractFactoryImpl{}
 	g2Config, err := senzingFactory.GetG2config(ctx)
 	if err != nil {
@@ -56,7 +56,7 @@ func createG2Engine(ctx context.Context, engineConfigJson string) *g2api.G2engin
 		handleError(3, err, "Unable to reach G2")
 	}
 	if g2Config.GetSdkId(ctx) == "base" {
-		err = g2engine.Init(ctx, "load", engineConfigJson, 0)
+		err = g2engine.Init(ctx, "load", engineConfigJson, engineLogLevel)
 		if err != nil {
 			handleError(4, err, "Could not Init G2")
 		}

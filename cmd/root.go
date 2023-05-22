@@ -23,6 +23,7 @@ import (
 const (
 	defaultDelayInSeconds int    = 0
 	defaultEngineConfig   string = ""
+	defaultEngineLogLevel int    = 0
 	defaultFileType       string = ""
 	defaultInputURL       string = ""
 	defaultOutputURL      string = ""
@@ -100,9 +101,10 @@ func Run(cmd *cobra.Command, args []string) {
 		ctx := context.Background()
 
 		loader := &loader.LoaderImpl{
+			EngineConfigJson: viper.GetString(option.EngineConfigurationJson),
+			EngineLogLevel:   viper.GetInt(option.EngineLogLevel),
 			InputURL:         viper.GetString(option.InputURL),
 			LogLevel:         viper.GetString(option.LogLevel),
-			EngineConfigJson: viper.GetString(option.EngineConfigurationJson),
 		}
 
 		if !loader.Load(ctx) {
@@ -137,6 +139,7 @@ func Execute() {
 // ----------------------------------------------------------------------------
 func init() {
 	RootCmd.Flags().Int(option.DelayInSeconds, defaultDelayInSeconds, option.DelayInSecondsHelp)
+	RootCmd.Flags().Int(option.EngineLogLevel, defaultEngineLogLevel, option.EngineLogLevel)
 	RootCmd.Flags().String(option.InputFileType, defaultFileType, option.InputFileTypeHelp)
 	RootCmd.Flags().String(option.InputURL, defaultInputURL, option.InputURLHelp)
 	RootCmd.Flags().String(option.LogLevel, defaultLogLevel, fmt.Sprintf(option.LogLevelHelp, envar.LogLevel))
@@ -193,6 +196,7 @@ func loadOptions(cobraCommand *cobra.Command) {
 
 	intOptions := map[string]int{
 		option.DelayInSeconds: defaultDelayInSeconds,
+		option.EngineLogLevel: defaultEngineLogLevel,
 	}
 	for optionKey, optionValue := range intOptions {
 		viper.SetDefault(optionKey, optionValue)
