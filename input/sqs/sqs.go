@@ -23,7 +23,7 @@ func Read(ctx context.Context, urlString, engineConfigJson string, engineLogLeve
 
 	// Work with G2engine.
 	g2engine := createG2Engine(ctx, engineConfigJson, engineLogLevel)
-	defer (*g2engine).Destroy(ctx)
+	defer g2engine.Destroy(ctx)
 	// var g2engine *g2api.G2engine = nil
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
@@ -43,7 +43,7 @@ func Read(ctx context.Context, urlString, engineConfigJson string, engineLogLeve
 
 // create a G2Engine object, on error this function panics.
 // see failOnError
-func createG2Engine(ctx context.Context, engineConfigJson string, engineLogLevel int) *g2api.G2engine {
+func createG2Engine(ctx context.Context, engineConfigJson string, engineLogLevel int) g2api.G2engine {
 	senzingFactory := &factory.SdkAbstractFactoryImpl{}
 	g2Config, err := senzingFactory.GetG2config(ctx)
 	if err != nil {
@@ -61,7 +61,7 @@ func createG2Engine(ctx context.Context, engineConfigJson string, engineLogLevel
 			handleError(4, err, "Could not Init G2")
 		}
 	}
-	return &g2engine
+	return g2engine
 }
 
 // ----------------------------------------------------------------------------
