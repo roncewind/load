@@ -6,8 +6,8 @@ require (
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
 	github.com/roncewind/move v0.0.12-0.20230525184054-e690a6ee9716
 	github.com/senzing/g2-sdk-go v0.6.3
-	github.com/senzing/go-logging v1.2.3
-	github.com/senzing/go-sdk-abstract-factory v0.2.3
+	github.com/senzing/go-logging v1.2.5
+	github.com/senzing/go-sdk-abstract-factory v0.2.4
 	github.com/senzing/senzing-tools v0.2.7-0.20230525180928-11837a05b413
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
@@ -52,11 +52,11 @@ require (
 	github.com/subosito/gotenv v1.4.2 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/exp v0.0.0-20230519143937-03e91628a987 // indirect
+	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
-	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
+	google.golang.org/genproto v0.0.0-20230524185152-1884fd1fac28 // indirect
 	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
