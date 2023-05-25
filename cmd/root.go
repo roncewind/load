@@ -51,9 +51,7 @@ var (
 	buildIteration string = "0"
 	buildVersion   string = "0.0.0"
 	programName    string = "load"
-)
 
-var (
 	defaultWithInfoParameter string = ""
 )
 
