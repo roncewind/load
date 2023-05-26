@@ -30,7 +30,9 @@ LD_LIBRARY_PATH ?= ${SENZING_G2_DIR}/lib
 
 .EXPORT_ALL_VARIABLES:
 
+# -----------------------------------------------------------------------------
 # The first "make" target runs as default.
+# -----------------------------------------------------------------------------
 
 .PHONY: default
 default: help
@@ -47,7 +49,7 @@ dependencies:
 
 
 .PHONY: build
-build: dependencies build-linux
+build: build-linux
 
 
 .PHONY: build-linux
@@ -63,6 +65,25 @@ build-linux:
 		-o $(GO_PACKAGE_NAME)
 	@mkdir -p $(TARGET_DIRECTORY)/linux || true
 	@mv $(GO_PACKAGE_NAME) $(TARGET_DIRECTORY)/linux
+
+.PHONY: build-scratch
+build-scratch:
+	@GOOS=linux \
+	GOARCH=amd64 \
+	CGO_ENABLED=0 \
+	go build \
+		-a \
+		-installsuffix cgo \
+		-ldflags \
+			"-s \
+			-w \
+			-X 'github.com/roncewind/move/cmd.buildIteration=${BUILD_ITERATION}' \
+			-X 'github.com/roncewind/move/cmd.buildVersion=${BUILD_VERSION}' \
+			-X 'github.com/roncewind/move/cmd.programName=${PROGRAM_NAME}' \
+			" \
+		-o $(GO_PACKAGE_NAME)
+	@mkdir -p $(TARGET_DIRECTORY)/scratch || true
+	@mv $(GO_PACKAGE_NAME) $(TARGET_DIRECTORY)/scratch
 
 # -----------------------------------------------------------------------------
 # Test
@@ -156,6 +177,9 @@ print-make-variables:
 		$(if $(filter-out environment% default automatic, \
 		$(origin $V)),$(warning $V=$($V) ($(value $V)))))
 
+# -----------------------------------------------------------------------------
+# Help
+# -----------------------------------------------------------------------------
 
 .PHONY: help
 help:
