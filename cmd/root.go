@@ -95,17 +95,23 @@ func Run(cmd *cobra.Command, args []string) {
 		time.Sleep(time.Duration(viper.GetInt(option.DelayInSeconds)) * time.Second)
 	}
 
-	ctx := context.Background()
+	if viper.IsSet(option.InputURL) {
+		ctx := context.Background()
 
-	loader := &loader.LoaderImpl{
-		EngineConfigJson: viper.GetString(option.EngineConfigurationJson),
-		EngineLogLevel:   viper.GetInt(option.EngineLogLevel),
-		InputURL:         viper.GetString(option.InputURL),
-		LogLevel:         viper.GetString(option.LogLevel),
-	}
+		loader := &loader.LoaderImpl{
+			EngineConfigJson: viper.GetString(option.EngineConfigurationJson),
+			EngineLogLevel:   viper.GetInt(option.EngineLogLevel),
+			InputURL:         viper.GetString(option.InputURL),
+			LogLevel:         viper.GetString(option.LogLevel),
+		}
 
-	if !loader.Load(ctx) {
+		if !loader.Load(ctx) {
+			cmd.Help()
+		}
+	} else {
 		cmd.Help()
+		fmt.Println("Build Version:", buildVersion)
+		fmt.Println("Build Iteration:", buildIteration)
 	}
 
 }
@@ -136,8 +142,6 @@ func init() {
 	RootCmd.Flags().String(option.InputURL, defaultInputURL, option.InputURLHelp)
 	RootCmd.Flags().String(option.LogLevel, defaultLogLevel, fmt.Sprintf(option.LogLevelHelp, envar.LogLevel))
 	RootCmd.Flags().String(option.OutputURL, defaultOutputURL, option.OutputURLHelp)
-
-	RootCmd.MarkFlagRequired(option.InputURL)
 }
 
 // ----------------------------------------------------------------------------
