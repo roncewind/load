@@ -21,16 +21,17 @@ import (
 )
 
 const (
-	defaultDelayInSeconds int    = 0
-	defaultEngineConfig   string = ""
-	defaultEngineLogLevel int    = 0
-	defaultFileType       string = ""
-	defaultInputURL       string = ""
-	defaultOutputURL      string = ""
-	defaultLogLevel       string = "error"
-	Use                   string = "load"
-	Short                 string = "Load records into Senzing."
-	Long                  string = `
+	defaultDelayInSeconds  int    = 0
+	defaultEngineConfig    string = ""
+	defaultEngineLogLevel  int    = 0
+	defaultFileType        string = ""
+	defaultInputURL        string = ""
+	defaultOutputURL       string = ""
+	defaultLogLevel        string = "error"
+	defaultNumberOfWorkers int    = 0
+	Use                    string = "load"
+	Short                  string = "Load records into Senzing."
+	Long                   string = `
 	Welcome to load!
 	This tool will load records into Senzing. It validates the records conform to the Generic Entity Specification.
 
@@ -103,6 +104,7 @@ func Run(cmd *cobra.Command, args []string) {
 			EngineLogLevel:   viper.GetInt(option.EngineLogLevel),
 			InputURL:         viper.GetString(option.InputURL),
 			LogLevel:         viper.GetString(option.LogLevel),
+			NumberOfWorkers:  viper.GetInt(option.NumberOfWorkers),
 		}
 
 		if !loader.Load(ctx) {
@@ -141,6 +143,7 @@ func init() {
 	RootCmd.Flags().String(option.InputFileType, defaultFileType, option.InputFileTypeHelp)
 	RootCmd.Flags().String(option.InputURL, defaultInputURL, option.InputURLHelp)
 	RootCmd.Flags().String(option.LogLevel, defaultLogLevel, fmt.Sprintf(option.LogLevelHelp, envar.LogLevel))
+	RootCmd.Flags().Int(option.NumberOfWorkers, defaultNumberOfWorkers, option.NumberOfWorkersHelp)
 	RootCmd.Flags().String(option.OutputURL, defaultOutputURL, option.OutputURLHelp)
 }
 
@@ -193,8 +196,9 @@ func loadOptions(cobraCommand *cobra.Command) {
 	// Ints
 
 	intOptions := map[string]int{
-		option.DelayInSeconds: defaultDelayInSeconds,
-		option.EngineLogLevel: defaultEngineLogLevel,
+		option.DelayInSeconds:  defaultDelayInSeconds,
+		option.EngineLogLevel:  defaultEngineLogLevel,
+		option.NumberOfWorkers: defaultNumberOfWorkers,
 	}
 	for optionKey, optionValue := range intOptions {
 		viper.SetDefault(optionKey, optionValue)
