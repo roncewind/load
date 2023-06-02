@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/docktermj/go-xyzzy-helpers v0.2.2
-	github.com/roncewind/move v0.0.12-0.20230602143325-b4d8a87c25d8
+	github.com/roncewind/move v0.0.12-0.20230602161750-f99ea5b17b01
 	github.com/senzing/g2-sdk-go v0.6.4
 	github.com/senzing/go-logging v1.2.5
 	github.com/senzing/go-sdk-abstract-factory v0.3.0
@@ -36,7 +36,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/rabbitmq/amqp091-go v1.7.0 // indirect
-	github.com/roncewind/go-util v0.0.5-0.20230602143246-46ef0036466a // indirect
+	github.com/roncewind/go-util v0.0.5-0.20230602161716-f9ebfe635425 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/senzing/g2-sdk-go-base v0.2.0 // indirect
 	github.com/senzing/g2-sdk-go-grpc v0.3.0 // indirect
