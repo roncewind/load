@@ -28,7 +28,7 @@ func Read(ctx context.Context, urlString, engineConfigJson string, engineLogLeve
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
-	startErr := sqs.StartConsumer(ctx, urlString, numberOfWorkers, g2engine, false)
+	startErr := sqs.StartConsumer(ctx, urlString, numberOfWorkers, g2engine, false, 60)
 	if startErr != nil {
 		msg := "there was an unexpected issue; please report this as a bug."
 		if _, ok := startErr.(managedconsumer.ManagedConsumerError); ok {
