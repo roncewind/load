@@ -186,16 +186,8 @@ github.com/rabbitmq/amqp091-go v1.7.0 h1:V5CF5qPem5OGSnEo8BoSbsDGwejg6VUJsKEdnea
 github.com/rabbitmq/amqp091-go v1.7.0/go.mod h1:wfClAtY0C7bOHxd3GjmF26jEHn+rR/0B3+YV+Vn9/NI=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjRBZyWFQ=
-github.com/roncewind/go-util v0.0.5-0.20230606171831-2426717d8063 h1:v3XaeWGZQfs/c+EXAMpD2sOEWRq3k/7wBXqL00iv9ZE=
-github.com/roncewind/go-util v0.0.5-0.20230606171831-2426717d8063/go.mod h1:3W93f0MuKIQJA21OqGPcjzw87zc1TFFTn/O0lWB2Ahg=
 github.com/roncewind/go-util v0.0.5-0.20230606201919-7a525e0eacff h1:mQCSBTfeK6tJzmC6JA9ZIO1wECLFJBHXDNcYHKkzBcs=
 github.com/roncewind/go-util v0.0.5-0.20230606201919-7a525e0eacff/go.mod h1:3W93f0MuKIQJA21OqGPcjzw87zc1TFFTn/O0lWB2Ahg=
-github.com/roncewind/move v0.0.12-0.20230606201113-7c7600d60b82 h1:kw2+LeehR3DmyTYUU+PHSWxqxhHfK0mXCJAGw1BL+Es=
-github.com/roncewind/move v0.0.12-0.20230606201113-7c7600d60b82/go.mod h1:0ZuEgYlYABqHdTceS3hChJF3/0A5Kp+dNaWWPjWTJgw=
-github.com/roncewind/move v0.0.12-0.20230606201947-782ef74ffc8a h1:XESY/v/dGQp6BrC5WdoH/4e4sh8f1SLWWondmeEgq74=
-github.com/roncewind/move v0.0.12-0.20230606201947-782ef74ffc8a/go.mod h1:iCj7YMYY9dDLTbo0Pw2a7lfxL3bpDp3a/C/aqbrAZ4s=
-github.com/roncewind/move v0.0.12-0.20230606202103-af97ad8a3724 h1:knta6q6Age9UGl+aJJs/NLtjQUG/Od7hSkVzUWeXj/o=
-github.com/roncewind/move v0.0.12-0.20230606202103-af97ad8a3724/go.mod h1:iCj7YMYY9dDLTbo0Pw2a7lfxL3bpDp3a/C/aqbrAZ4s=
 github.com/roncewind/move v0.0.12-0.20230606202145-94c94c51a3b8 h1:NJJ018uLS1i9PCN2oOBn+jP3T8ZekqWSninwbY6+reQ=
 github.com/roncewind/move v0.0.12-0.20230606202145-94c94c51a3b8/go.mod h1:iCj7YMYY9dDLTbo0Pw2a7lfxL3bpDp3a/C/aqbrAZ4s=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
