@@ -188,8 +188,6 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjRBZyWFQ=
 github.com/roncewind/go-util v0.0.5-0.20230606201919-7a525e0eacff h1:mQCSBTfeK6tJzmC6JA9ZIO1wECLFJBHXDNcYHKkzBcs=
 github.com/roncewind/go-util v0.0.5-0.20230606201919-7a525e0eacff/go.mod h1:3W93f0MuKIQJA21OqGPcjzw87zc1TFFTn/O0lWB2Ahg=
-github.com/roncewind/move v0.0.12-0.20230607144056-69524f8bcc06 h1:nvhpzXQL+GlVIxHzPE8aQorEhKn8j+nbxEaIMNx4egg=
-github.com/roncewind/move v0.0.12-0.20230607144056-69524f8bcc06/go.mod h1:iCj7YMYY9dDLTbo0Pw2a7lfxL3bpDp3a/C/aqbrAZ4s=
 github.com/roncewind/move v0.0.12-0.20230607151426-77958e56b73f h1:f4UAaw3hAK3OrzLWgarpAbpqvpcXvSErPN2sjWULfPs=
 github.com/roncewind/move v0.0.12-0.20230607151426-77958e56b73f/go.mod h1:iCj7YMYY9dDLTbo0Pw2a7lfxL3bpDp3a/C/aqbrAZ4s=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
