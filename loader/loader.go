@@ -69,6 +69,7 @@ func logBuildInfo() {
 
 func logStats() {
 	cpus := runtime.NumCPU()
+	goMaxProc := runtime.GOMAXPROCS(0)
 	goRoutines := runtime.NumGoroutine()
 	cgoCalls := runtime.NumCgoCall()
 	var memStats runtime.MemStats
@@ -79,6 +80,7 @@ func logStats() {
 	// fmt.Println("---------------------------------------------------------------")
 	// fmt.Println("Time:", time.Now())
 	// fmt.Println("CPUs:", cpus)
+	// fmt.Println("GOMAXPROC:", goMaxProc)
 	// fmt.Println("Go routines:", goRoutines)
 	// fmt.Println("CGO calls:", cgoCalls)
 	// fmt.Println("Num GC:", memStats.NumGC)
@@ -90,8 +92,8 @@ func logStats() {
 	// fmt.Println("CPU fraction used by GC:", memStats.GCCPUFraction)
 
 	fmt.Println("---------------------------------------------------------------")
-	printCSV(">>>", "Time", "CPUs", "Go routines", "CGO calls", "Num GC", "GC pause total", "LastGC", "TotalAlloc", "HeapAlloc", "NextGC", "GCSys", "HeapSys", "StackSys", "Sys - total OS bytes", "CPU fraction used by GC")
-	printCSV(">>>", time.Now(), cpus, goRoutines, cgoCalls, memStats.NumGC, gcStats.PauseTotal, gcStats.LastGC, memStats.TotalAlloc, memStats.HeapAlloc, memStats.NextGC, memStats.GCSys, memStats.HeapSys, memStats.StackSys, memStats.Sys, memStats.GCCPUFraction)
+	printCSV(">>>", "Time", "CPUs", "GOMAXPROC", "Go routines", "CGO calls", "Num GC", "GC pause total", "LastGC", "TotalAlloc", "HeapAlloc", "NextGC", "GCSys", "HeapSys", "StackSys", "Sys - total OS bytes", "CPU fraction used by GC")
+	printCSV(">>>", time.Now(), cpus, goMaxProc, goRoutines, cgoCalls, memStats.NumGC, gcStats.PauseTotal, gcStats.LastGC, memStats.TotalAlloc, memStats.HeapAlloc, memStats.NextGC, memStats.GCSys, memStats.HeapSys, memStats.StackSys, memStats.Sys, memStats.GCCPUFraction)
 }
 
 // ----------------------------------------------------------------------------
