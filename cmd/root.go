@@ -101,11 +101,12 @@ func Run(cmd *cobra.Command, args []string) {
 		ctx := context.Background()
 
 		loader := &loader.LoaderImpl{
-			EngineConfigJson: viper.GetString(option.EngineConfigurationJson),
-			EngineLogLevel:   viper.GetInt(option.EngineLogLevel),
-			InputURL:         viper.GetString(option.InputURL),
-			LogLevel:         viper.GetString(option.LogLevel),
-			NumberOfWorkers:  viper.GetInt(option.NumberOfWorkers),
+			EngineConfigJson:          viper.GetString(option.EngineConfigurationJson),
+			EngineLogLevel:            viper.GetInt(option.EngineLogLevel),
+			InputURL:                  viper.GetString(option.InputURL),
+			LogLevel:                  viper.GetString(option.LogLevel),
+			NumberOfWorkers:           viper.GetInt(option.NumberOfWorkers),
+			VisibilityPeriodInSeconds: viper.GetInt(option.VisibilityPeriodInSeconds),
 		}
 
 		if !loader.Load(ctx) {
