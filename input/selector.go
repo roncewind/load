@@ -71,7 +71,7 @@ func parseURL(urlString string) *url.URL {
 }
 
 // ----------------------------------------------------------------------------
-func Read(ctx context.Context, inputURL, logLevel, engineConfigJson string, engineLogLevel int, numberOfWorkers int) bool {
+func Read(ctx context.Context, inputURL, logLevel, engineConfigJson string, engineLogLevel, numberOfWorkers, visibilityPeriodInSeconds int) bool {
 	if len(logLevel) > 0 {
 		msglog.SetLogLevelFromString(logLevel)
 	}
@@ -88,14 +88,14 @@ func Read(ctx context.Context, inputURL, logLevel, engineConfigJson string, engi
 		//allows for using a dummy URL with just a queue-name
 		// eg  sqs://lookup?queue-name=myqueue
 		if len(inputURL) > 0 {
-			sqs.Read(ctx, inputURL, engineConfigJson, engineLogLevel, numberOfWorkers)
+			sqs.Read(ctx, inputURL, engineConfigJson, engineLogLevel, numberOfWorkers, visibilityPeriodInSeconds)
 		} else {
 			return false
 		}
 	case "https":
 		//uses actual AWS SQS URL.  TODO: detect sqs/amazonaws url?
 		if len(inputURL) > 0 {
-			sqs.Read(ctx, inputURL, engineConfigJson, engineLogLevel, numberOfWorkers)
+			sqs.Read(ctx, inputURL, engineConfigJson, engineLogLevel, numberOfWorkers, visibilityPeriodInSeconds)
 		} else {
 			return false
 		}

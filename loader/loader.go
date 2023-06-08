@@ -15,11 +15,12 @@ import (
 // ----------------------------------------------------------------------------
 
 type LoaderImpl struct {
-	EngineConfigJson string
-	EngineLogLevel   int
-	InputURL         string
-	LogLevel         string
-	NumberOfWorkers  int
+	EngineConfigJson          string
+	EngineLogLevel            int
+	InputURL                  string
+	LogLevel                  string
+	NumberOfWorkers           int
+	VisibilityPeriodInSeconds int
 }
 
 // ----------------------------------------------------------------------------
@@ -46,7 +47,7 @@ func (l *LoaderImpl) Load(ctx context.Context) bool {
 		}
 	}()
 
-	return input.Read(ctx, l.InputURL, l.LogLevel, l.EngineConfigJson, l.EngineLogLevel, l.NumberOfWorkers)
+	return input.Read(ctx, l.InputURL, l.LogLevel, l.EngineConfigJson, l.EngineLogLevel, l.NumberOfWorkers, l.VisibilityPeriodInSeconds)
 }
 
 // ----------------------------------------------------------------------------

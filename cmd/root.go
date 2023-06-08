@@ -21,17 +21,18 @@ import (
 )
 
 const (
-	defaultDelayInSeconds  int    = 0
-	defaultEngineConfig    string = ""
-	defaultEngineLogLevel  int    = 0
-	defaultFileType        string = ""
-	defaultInputURL        string = ""
-	defaultOutputURL       string = ""
-	defaultLogLevel        string = "error"
-	defaultNumberOfWorkers int    = 0
-	Use                    string = "load"
-	Short                  string = "Load records into Senzing."
-	Long                   string = `
+	defaultDelayInSeconds            int    = 0
+	defaultEngineConfig              string = ""
+	defaultEngineLogLevel            int    = 0
+	defaultFileType                  string = ""
+	defaultInputURL                  string = ""
+	defaultOutputURL                 string = ""
+	defaultLogLevel                  string = "error"
+	defaultNumberOfWorkers           int    = 0
+	defaultVisibilityPeriodInSeconds int    = 60
+	Use                              string = "load"
+	Short                            string = "Load records into Senzing."
+	Long                             string = `
 	Welcome to load!
 	This tool will load records into Senzing. It validates the records conform to the Generic Entity Specification.
 
@@ -144,6 +145,7 @@ func init() {
 	RootCmd.Flags().String(option.InputURL, defaultInputURL, option.InputURLHelp)
 	RootCmd.Flags().String(option.LogLevel, defaultLogLevel, fmt.Sprintf(option.LogLevelHelp, envar.LogLevel))
 	RootCmd.Flags().Int(option.NumberOfWorkers, defaultNumberOfWorkers, option.NumberOfWorkersHelp)
+	RootCmd.Flags().Int(option.VisibilityPeriodInSeconds, defaultVisibilityPeriodInSeconds, option.VisibilityPeriodInSecondsHelp)
 	RootCmd.Flags().String(option.OutputURL, defaultOutputURL, option.OutputURLHelp)
 }
 
@@ -196,9 +198,10 @@ func loadOptions(cobraCommand *cobra.Command) {
 	// Ints
 
 	intOptions := map[string]int{
-		option.DelayInSeconds:  defaultDelayInSeconds,
-		option.EngineLogLevel:  defaultEngineLogLevel,
-		option.NumberOfWorkers: defaultNumberOfWorkers,
+		option.DelayInSeconds:            defaultDelayInSeconds,
+		option.EngineLogLevel:            defaultEngineLogLevel,
+		option.NumberOfWorkers:           defaultNumberOfWorkers,
+		option.VisibilityPeriodInSeconds: defaultVisibilityPeriodInSeconds,
 	}
 	for optionKey, optionValue := range intOptions {
 		viper.SetDefault(optionKey, optionValue)

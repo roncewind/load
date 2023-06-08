@@ -19,7 +19,7 @@ const MessageIdFormat = "senzing-6201%04d"
 // ----------------------------------------------------------------------------
 
 // read and process records from the given queue until a system interrupt
-func Read(ctx context.Context, urlString, engineConfigJson string, engineLogLevel int, numberOfWorkers int) {
+func Read(ctx context.Context, urlString, engineConfigJson string, engineLogLevel, numberOfWorkers, visibilityPeriodInSeconds int) {
 
 	// Work with G2engine.
 	g2engine := createG2Engine(ctx, engineConfigJson, engineLogLevel)
@@ -28,7 +28,7 @@ func Read(ctx context.Context, urlString, engineConfigJson string, engineLogLeve
 
 	// fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
 	fmt.Println("reading:", urlString)
-	startErr := sqs.StartConsumer(ctx, urlString, numberOfWorkers, g2engine, false, 60)
+	startErr := sqs.StartConsumer(ctx, urlString, numberOfWorkers, g2engine, false, int32(visibilityPeriodInSeconds))
 	if startErr != nil {
 		msg := "there was an unexpected issue; please report this as a bug."
 		if _, ok := startErr.(managedconsumer.ManagedConsumerError); ok {
