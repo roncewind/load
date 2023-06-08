@@ -3,6 +3,7 @@ package loader
 import (
 	"context"
 	"fmt"
+	"os/exec"
 	"runtime"
 	"runtime/debug"
 	"time"
@@ -32,6 +33,7 @@ var _ Loader = (*LoaderImpl)(nil)
 
 func (l *LoaderImpl) Load(ctx context.Context) bool {
 
+	logOSInfo()
 	logBuildInfo()
 	logStats()
 
@@ -63,6 +65,20 @@ func logBuildInfo() {
 	} else {
 		fmt.Println("Unable to read build info.")
 	}
+}
+
+// ----------------------------------------------------------------------------
+
+func logOSInfo() {
+	cmd := exec.Command("ps", "-eo", "nlwp,cmd")
+	stdout, err := cmd.Output()
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	fmt.Println("DEBUG OS:", string(stdout))
 }
 
 // ----------------------------------------------------------------------------
