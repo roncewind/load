@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"runtime"
 	"strings"
 	"time"
 
@@ -149,7 +148,6 @@ func init() {
 	RootCmd.Flags().Int(option.NumberOfWorkers, defaultNumberOfWorkers, option.NumberOfWorkersHelp)
 	RootCmd.Flags().Int(option.VisibilityPeriodInSeconds, defaultVisibilityPeriodInSeconds, option.VisibilityPeriodInSecondsHelp)
 	RootCmd.Flags().String(option.OutputURL, defaultOutputURL, option.OutputURLHelp)
-	runtime.GOMAXPROCS(64)
 }
 
 // ----------------------------------------------------------------------------
