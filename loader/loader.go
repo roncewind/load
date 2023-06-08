@@ -33,7 +33,7 @@ var _ Loader = (*LoaderImpl)(nil)
 
 func (l *LoaderImpl) Load(ctx context.Context) bool {
 
-	runtime.GOMAXPROCS(l.NumberOfWorkers)
+	// runtime.GOMAXPROCS(l.NumberOfWorkers)
 
 	logOSInfo()
 	logBuildInfo()
