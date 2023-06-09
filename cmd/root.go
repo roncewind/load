@@ -14,6 +14,7 @@ import (
 	"github.com/roncewind/load/loader"
 	"github.com/senzing/senzing-tools/constant"
 	"github.com/senzing/senzing-tools/envar"
+	"github.com/senzing/senzing-tools/help"
 	"github.com/senzing/senzing-tools/helper"
 	"github.com/senzing/senzing-tools/option"
 	"github.com/spf13/cobra"
@@ -140,14 +141,14 @@ func Execute() {
 
 // ----------------------------------------------------------------------------
 func init() {
-	RootCmd.Flags().Int(option.DelayInSeconds, defaultDelayInSeconds, option.DelayInSecondsHelp)
-	RootCmd.Flags().Int(option.EngineLogLevel, defaultEngineLogLevel, option.EngineLogLevel)
-	RootCmd.Flags().String(option.InputFileType, defaultFileType, option.InputFileTypeHelp)
-	RootCmd.Flags().String(option.InputURL, defaultInputURL, option.InputURLHelp)
-	RootCmd.Flags().String(option.LogLevel, defaultLogLevel, fmt.Sprintf(option.LogLevelHelp, envar.LogLevel))
-	RootCmd.Flags().Int(option.NumberOfWorkers, defaultNumberOfWorkers, option.NumberOfWorkersHelp)
-	RootCmd.Flags().Int(option.VisibilityPeriodInSeconds, defaultVisibilityPeriodInSeconds, option.VisibilityPeriodInSecondsHelp)
-	RootCmd.Flags().String(option.OutputURL, defaultOutputURL, option.OutputURLHelp)
+	RootCmd.Flags().Int(option.DelayInSeconds, defaultDelayInSeconds, help.DelayInSeconds)
+	RootCmd.Flags().Int(option.EngineLogLevel, defaultEngineLogLevel, help.EngineLogLevel)
+	RootCmd.Flags().String(option.InputFileType, defaultFileType, help.InputFileType)
+	RootCmd.Flags().String(option.InputURL, defaultInputURL, help.InputURL)
+	RootCmd.Flags().String(option.LogLevel, defaultLogLevel, fmt.Sprintf(help.LogLevel, envar.LogLevel))
+	RootCmd.Flags().Int(option.NumberOfWorkers, defaultNumberOfWorkers, help.NumberOfWorkers)
+	RootCmd.Flags().Int(option.VisibilityPeriodInSeconds, defaultVisibilityPeriodInSeconds, help.VisibilityPeriodInSeconds)
+	RootCmd.Flags().String(option.OutputURL, defaultOutputURL, help.OutputURL)
 }
 
 // ----------------------------------------------------------------------------
